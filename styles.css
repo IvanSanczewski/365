@@ -7,3 +7,20 @@ ul {
     list-style-type: none;
 }
 /* text-decoration: none; */
+
+body {
+    display:flex;
+    flex-direction: row;
+    gap: 2em; 
+}
+
+#meta {
+    display: flex;
+    flex-direction: row;
+    gap: 10px
+}
+
+#content {
+    display: flex;
+    flex-direction: column;
+}
