@@ -1,17 +1,13 @@
 import data from './mockup.json' assert { type: 'json' };
 
-const meta = document.getElementById('meta');
-const location = document.querySelector('.location');
-const year = document.querySelector('.year');
+const meta = document.getElementById('meta').innerHTML;
+const caption = document.querySelector('.caption');
 
 
-function dispplayContent() {
-    data.forEach(item => {
-        console.log(location, year);
-        // meta.createNodeElement('div')
-        // location.textContent = item.location
-        // location.textContent = item.year
-    })
+function displayContent() {
+    for (const item in data) {  
+        caption.textContent = `${data[item].location}, ${data[item].year}` 
+    }
 }
 
-dispplayContent()
+displayContent();
