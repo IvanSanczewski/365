@@ -8,6 +8,8 @@ ul {
 }
 
 li {
+    display: flex;
+
     text-decoration: none;
 }
 
@@ -25,17 +27,28 @@ body {
 
 #content {
     display: flex;
-    gap: 1em; 
+    gap: 4em; 
     /* flex-direction: column; */
 }
 
 img {
-    /* width: 600px; */
-    height: 500px;
-    display: inline;
+    width: 550px;
+    height: 385px;
+    
+    object-fit: contain;
+    /* object-position: 45% 0%; */
 }
 
-p {
-    display: inline;
+.picture {
+    display: flex;
+    align-items: center;
+}
 
+.context {
+    display: flex;
+    flex-direction: column;
+}
+
+.caption {
+    text-align: center;
 }

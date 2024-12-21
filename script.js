@@ -30,12 +30,16 @@ function displayContent() {
     for (const item in data) {
         const li = document.createElement('li');
 
-        const div = document.createElement('div');
-        div.className = 'picture';
-
+        const pictureDiv = document.createElement('div');
+        pictureDiv.className = 'picture';
+        
         const img = document.createElement('img');
         img.setAttribute('src', `${data[item].image}`);
         img.setAttribute('alt', 'some ALT text');
+        
+        const contextDiv = document.createElement('div');
+        contextDiv.className = 'picture';
+
 
         const text = document.createElement('p');
         text.className = 'text';
@@ -45,8 +49,9 @@ function displayContent() {
         caption.className = 'caption';
         caption.textContent = `${data[item].location}, ${data[item].year}`
         
-        div.append(img, text)
-        li.append(div, caption);
+        pictureDiv.appendChild(img);
+        contextDiv.append(text, caption)
+        li.append(pictureDiv, contextDiv);
         content.appendChild(li);
     }
 }
