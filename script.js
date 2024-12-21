@@ -1,11 +1,6 @@
 import data from './mockup.json' assert { type: 'json' };
 
 const content = document.getElementById('content');
-// const picture = document.querySelector('.picture');
-// const text = document.querySelector('.text');
-// const meta = document.getElementById('meta').innerHTML;
-const caption = document.querySelector('.caption');
-
 console.log(typeof data, data);
 
 async function fetchData() {
@@ -33,8 +28,10 @@ const createNodeItem = item => {
 function displayContent() {
     content.innerHTML = '';
     for (const item in data) {
-        console.log(typeof item, item);
         const li = document.createElement('li');
+
+        const div = document.createElement('div');
+        div.className = 'picture';
 
         const img = document.createElement('img');
         img.setAttribute('src', `${data[item].image}`);
@@ -48,7 +45,8 @@ function displayContent() {
         caption.className = 'caption';
         caption.textContent = `${data[item].location}, ${data[item].year}`
         
-        li.append(img, text, caption);
+        div.append(img, text)
+        li.append(div, caption);
         content.appendChild(li);
     }
 }
