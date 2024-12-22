@@ -4,20 +4,20 @@
     box-sizing: border-box;
 }
 
-/* html {
-    height: 100%;
-} */
-
 body {
     min-height: 100vh;
 
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 header {
     background-color: rgb(233, 215, 193);
-    min-height: 100vh;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .container {
@@ -25,6 +25,16 @@ header {
     flex-direction: row;
     gap: 2em; 
 }
+
+main {
+    overflow-x: scroll; 
+    scrollbar-width: none;  /* For Firefox */
+}
+
+main::-webkit-scrollbar {
+    display: none;  /* For Chrome, Safari, and Edge */
+}
+
 
 ul {
     list-style: none;
@@ -36,7 +46,7 @@ li {
 
 img {
     /* width: 550px; */
-    height: 385px;
+    height: 50vh;
     
     object-fit: contain;
     /* object-position: 45% 0%; */
