@@ -29,6 +29,7 @@ function displayContent() {
     content.innerHTML = '';
     for (const item in data) {
         const li = document.createElement('li');
+        li.classList.add('post');
 
         const pictureDiv = document.createElement('div');
         pictureDiv.className = 'picture';
@@ -60,26 +61,3 @@ function displayContent() {
 
 // fetchData();
 displayContent();
-
-
-// console.log(typeof data, data);
-// console.log(typeof item, item);
-// console.log(typeof data[item], data[item]);
-// console.log(typeof data[item].text, data[item].text);
-
-// console.log(typeof picture.innerHTML, picture.innerHTML);
-// console.log(typeof text, text);
-
-// const image = document.createElement('div');
-// image.textContent = `${data[item].image}`;
-// picture.innerHTML = image;
-// // picture.appendChild(image);
-
-// const p = document.createElement('p');
-// p.textContent = `${data[item].text}`
-// text.innerHTML = p;
-
-// content.append(picture, text);
-
-
-// caption.textContent = `${data[item].location}, ${data[item].year}` 
