@@ -4,8 +4,15 @@
     box-sizing: border-box;
 }
 
-body {
+/* html {
     height: 100%;
+} */
+
+body {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -41,6 +48,7 @@ menu {
 }
 
 footer {
+    margin-top: auto;
     padding: 1em;
     text-align: center;
     
@@ -70,9 +78,8 @@ footer {
 }
 
 .addNewPost {
-    color: aliceblue;
-    /* margin-top: 5em; */
-    /* align-content: flex-end; */
+    color: rgb(255, 254, 240);
+    margin-top: auto;
 }
 
 #content {

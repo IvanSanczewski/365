@@ -1,4 +1,5 @@
-import data from './mockup.json' assert { type: 'json' };
+// import data from './mockup.json' assert { type: 'json' };
+import data from './mockup.json';
 
 const content = document.getElementById('content');
 console.log(typeof data, data);
