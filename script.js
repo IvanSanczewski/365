@@ -39,7 +39,7 @@ function displayContent() {
         img.setAttribute('alt', 'some ALT text');
         
         const contextDiv = document.createElement('div');
-        contextDiv.className = 'picture';
+        contextDiv.className = 'context';
 
 
         const text = document.createElement('p');

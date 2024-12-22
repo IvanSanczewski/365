@@ -7,21 +7,25 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <menu>
-            <ul id="menu">
-                <div id="main-menu">
-                    <li>pictures</li>
-                    <li>thoughts</li>
-                    <li>categories</li>
-                    <li>search</li>
-                </div>
-                <li class="addNewPost">add new</li>
-            </ul>
-        </menu>
-    </header>
-    <main>
-        <ul class="container" id="content">
+    <div class="container">
+
+        <header>
+            <menu>
+                <ul id="menu">
+                    <div id="main-menu">
+                        <span class="close-menu">X</span>
+                        <li>home</li>
+                        <li>pictures</li>
+                        <li>thoughts</li>
+                        <li>categories</li>
+                        <li>search</li>
+                    </div>
+                    <li class="addNewPost">add new</li>
+                </ul>
+            </menu>
+        </header>
+        <main>
+            <ul id="content">
                 <li>
                     <div class="picture">here goes the picture
                         <img src="" alt="">
@@ -31,8 +35,12 @@
                         <p class="caption">here goes the caption</p>
                     </div>
                 </li>
-        </ul>
-    </main>
+            </ul>
+        </main>
+    </div>
+    <footer>
+        <p>© Ivan Sanczewski, 2024</p>
+    </footer>
     
     <script type="module" src="script.js"></script>
 

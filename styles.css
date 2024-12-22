@@ -1,13 +1,20 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100%;
 }
 
 header {
     background-color: rgb(233, 215, 193);
+    height: 385px;
+    /* padding: 1em; */
 }
 
-body {
+.container {
     display:flex;
     flex-direction: row;
     gap: 2em; 
@@ -20,9 +27,9 @@ ul {
 li {
     text-decoration: none;
 }
- 
+
 img {
-    width: 550px;
+    /* width: 550px; */
     height: 385px;
     
     object-fit: contain;
@@ -31,6 +38,14 @@ img {
 
 menu {
     height: inherit;
+}
+
+footer {
+    padding: 1em;
+    text-align: center;
+    
+    color: #eee;
+    background-color: #333;
 }
 
 #menu {
@@ -43,20 +58,27 @@ menu {
 }
 
 #main-menu {
-    
     display: flex;
     flex-direction: column;
     gap: .8em;
 }
 
+.close-menu {
+    align-self: flex-end;
+    
+    cursor: pointer;
+}
+
 .addNewPost {
+    color: aliceblue;
     /* margin-top: 5em; */
     /* align-content: flex-end; */
 }
 
 #content {
     display: flex;
-    gap: 4em; 
+    gap: 1em; 
+    margin-top: 1em;
     /* flex-direction: column; */
 }
 
@@ -66,15 +88,20 @@ menu {
 
 .picture {
     display: flex;
-    align-items: center;
 }
 
 .context {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    
+    margin: 0 1em 0 1em;
+
+    width: 330px;
 }
 
 .caption {
-    text-align: center;
+    margin-top: 2em;
+    text-align: end;
 }
 
