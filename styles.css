@@ -1,5 +1,6 @@
 :root {
     --footer-height: 3em;
+    --nav-width: 300px;
 }
 
 * {
@@ -16,19 +17,35 @@ body {
     overflow: hidden;
 }
 
-header {
+nav {
     background-color: rgb(233, 215, 193);
-    /* height: auto; */
     height: calc(100vh - var(--footer-height));
-    display: flex;
+    width: var(--nav-width);
     flex-direction: column;
     justify-content: space-between;
 }
 
-.container {
+header {
+    background-color: violet;
+    width: calc(100vw - var(--nav-width));
+    width: 100vw;
+}
+
+h1 {
+    background-color: aqua;
+    margin: .35em;
+    padding-left: 585px;
+}
+
+.container-row {
     display:flex;
     flex-direction: row;
     gap: 2em; 
+}
+
+.container-col {
+    display:flex;
+    flex-direction: column;
 }
 
 main {
@@ -39,7 +56,6 @@ main {
 main::-webkit-scrollbar {
     display: none;  /* For Chrome, Safari, and Edge */
 }
-
 
 ul {
     list-style: none;
@@ -101,7 +117,6 @@ footer {
     display: flex;
     gap: 1em; 
     margin: 1em 0 1em 0;
-    /* flex-direction: column; */
 }
 
 .post {
