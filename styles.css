@@ -58,14 +58,6 @@ h1 {
 
 main {
     display: flex;
-    flex-direction: row; /* Ensure children are laid out horizontally */
-    overflow-x: auto; /* Enable horizontal scroll */
-    /* scrollbar-width: none; Hide scrollbar for Firefox */
-    scroll-behavior: smooth; /* Enable smooth scrolling for arrow keys/buttons */
-}
-
-main::-webkit-scrollbar {
-    display: none;  /* For Chrome, Safari, and Edge */
 }
 
 ul {
