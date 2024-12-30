@@ -1,6 +1,6 @@
 :root {
     --footer-height: 3em;
-    --nav-width: 300px;
+    --nav-width: 200px;
 }
 
 * {
@@ -21,26 +21,29 @@ nav {
     background-color: rgb(233, 215, 193);
     height: calc(100vh - var(--footer-height));
     width: var(--nav-width);
+    flex-shrink: 0;
+    display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
 header {
     background-color: violet;
-    width: calc(100vw - var(--nav-width));
-    width: 100vw;
+    /* display: flex;
+    justify-content: center; */
+    width: calc(100vw - var(--nav-width))
 }
 
 h1 {
     background-color: aqua;
     margin: .35em;
-    padding-left: 585px;
+    text-align: center;
+    /* padding-left: 585px; */
 }
 
 .container-row {
     display:flex;
     flex-direction: row;
-    gap: 2em; 
 }
 
 .container-col {
@@ -48,9 +51,17 @@ h1 {
     flex-direction: column;
 }
 
-main {
+/* main {
     overflow-x: scroll; 
-    scrollbar-width: none;  /* For Firefox */
+    scrollbar-width: none;  /* For Firefox
+} */
+
+main {
+    display: flex;
+    flex-direction: row; /* Ensure children are laid out horizontally */
+    overflow-x: auto; /* Enable horizontal scroll */
+    /* scrollbar-width: none; Hide scrollbar for Firefox */
+    scroll-behavior: smooth; /* Enable smooth scrolling for arrow keys/buttons */
 }
 
 main::-webkit-scrollbar {
@@ -66,11 +77,9 @@ li {
 }
 
 img {
-    /* width: 550px; */
     height: 50vh;
     
     object-fit: contain;
-    /* object-position: 45% 0%; */
 }
 
 menu {
@@ -115,6 +124,8 @@ footer {
 
 #content {
     display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping */
+    min-width: 100%; /* Ensure it’s at least as wide as the viewport */
     gap: 1em; 
     margin: 1em 0 1em 0;
 }
