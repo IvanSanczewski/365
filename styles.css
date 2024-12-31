@@ -1,6 +1,6 @@
 :root {
     --footer-height: 3em;
-    --nav-width: 200px;
+    --nav-width: 185px;
 }
 
 * {
@@ -14,7 +14,7 @@ body {
 
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 nav {
@@ -51,15 +51,6 @@ h1 {
     flex-direction: column;
 }
 
-/* main {
-    overflow-x: scroll; 
-    scrollbar-width: none;  /* For Firefox
-} */
-
-main {
-    display: flex;
-}
-
 ul {
     list-style: none;
 }
@@ -70,7 +61,7 @@ li {
 
 img {
     height: 50vh;
-    
+
     object-fit: contain;
 }
 
@@ -83,7 +74,7 @@ footer {
     margin-top: auto;
     padding: 1em;
     text-align: center;
-    
+
     color: #eee;
     background-color: #333;
 }
@@ -92,7 +83,7 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    
+
     height: inherit;
     padding: 1em;
 }
@@ -105,7 +96,7 @@ footer {
 
 .close-menu {
     align-self: flex-end;
-    
+
     cursor: pointer;
 }
 
@@ -114,16 +105,37 @@ footer {
     margin-top: auto;
 }
 
-#content {
-    display: flex;
+.tobedeleted {
+
+    /* display: flex; */
     flex-wrap: nowrap; /* Prevent wrapping */
-    min-width: 100%; /* Ensure it’s at least as wide as the viewport */
-    gap: 1em; 
+    min-width: max-content;  /* Ensure it’s at least as wide as the viewport */
+    gap: 1em;
     margin: 1em 0 1em 0;
 }
 
-.post {
+
+#visions {
+    display: grid;
+    gap: 1em;
+    grid-auto-flow: column;
+    grid-auto-columns: 22%;
+
+
+    overflow-x: auto;
+    /* overscroll-behavior-inline: contain; */
+}
+
+.vision-element {
     display: flex;
+    background-color: #f4f4f4;    /* Light gray background */
+    min-width: 450px;
+}
+
+.tobedeletedtoo {
+    display: flex;
+    list-style: none; /* Remove bullet points */
+    padding: 1em;
 }
 
 .picture {
@@ -134,14 +146,17 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
-    margin: 0 1em 0 1em;
 
-    width: 330px;
+    margin: 0 1em 0 1em;
+    width: 300px;
+}
+
+.text {
+    width: 100%;
 }
 
 .caption {
-    margin-top: 2em;
+    margin-top: 1em;
     text-align: end;
 }
 

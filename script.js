@@ -1,7 +1,7 @@
 // import data from './mockup.json' assert { type: 'json' };
 import data from './mockup.json';
 
-const content = document.getElementById('content');
+const visions = document.getElementById('visions');
 console.log(typeof data, data);
 
 async function fetchData() {
@@ -26,11 +26,11 @@ const createNodeItem = item => {
 }
 
 
-function displayContent() {
-    content.innerHTML = '';
+function displayVisions() {
+    visions.innerHTML = '';
     for (const item in data) {
         const li = document.createElement('li');
-        li.classList.add('post');
+        li.classList.add('vision-element');
 
         const pictureDiv = document.createElement('div');
         pictureDiv.className = 'picture';
@@ -54,11 +54,11 @@ function displayContent() {
         pictureDiv.appendChild(img);
         contextDiv.append(text, caption)
         li.append(pictureDiv, contextDiv);
-        content.appendChild(li);
+        visions.appendChild(li);
     }
 }
 
 
 
 // fetchData();
-displayContent();
+displayVisions();
