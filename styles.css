@@ -105,43 +105,31 @@ footer {
     margin-top: auto;
 }
 
-.tobedeleted {
-
-    /* display: flex; */
-    flex-wrap: nowrap; /* Prevent wrapping */
-    min-width: max-content;  /* Ensure it’s at least as wide as the viewport */
-    gap: 1em;
-    margin: 1em 0 1em 0;
-}
-
-
 #visions {
     display: grid;
     gap: 1em;
     grid-auto-flow: column;
-    grid-auto-columns: 32%;
-
-
+    grid-auto-columns: 18%;
+    /* grid-template-columns: repeat(auto-fill, minmax(375px + calc(100vw - (375px * 2)), 1fr)); */
+    
     overflow-x: auto;
-    /* overscroll-behavior-inline: contain; */
-}
-
+} 
+    
 .vision-element {
+    /* grid-column: span 1; */
+    width: calc(375px + 50vh);
     display: flex;
     background-color: #f4f4f4;    /* Light gray background */
-    min-width: 450px;
+    /* min-width: 450px; */
 }
 
-
-.tobedeletedtoo {
-    display: flex;
-    list-style: none; /* Remove bullet points */
-    padding: 1em;
-}
 
 .picture {
-    display: flex;
-}
+    width: auto; /* El ancho dependerá del objeto contenidio */
+    height: 50vh;
+    object-fit: contain;
+  }
+  
 
 .context {
     display: flex;
@@ -149,7 +137,7 @@ footer {
     justify-content: center;
 
     margin: 0 1em 0 1em;
-    width: 300px;
+    width: 375px;
 }
 
 .text {
