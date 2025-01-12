@@ -16,6 +16,8 @@ body {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
+
+    position: relative;
 }
 
 nav {
@@ -170,5 +172,48 @@ footer {
 }
 
 .hidden {
-    visibility: hidden;
+    display: none;
+}
+
+.post-form {
+    position: absolute;
+    left: var(--nav-width);
+    bottom: calc(2em + var(--footer-height));
+
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    gap: 2em;
+}
+
+.post-form div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.password-form {
+    align-self: flex-end;
+}
+
+.post-form input, .post-form textarea {
+    align-self: flex-end;
+    
+    padding-left: 0.25em;
+
+    background-color: #eee;
+    border-radius: 0.15em;
+    border: none;   
+    border-bottom: solid 1px #333; 
+
+    resize: none;
+}
+
+.vision-form {
+}
+
+.caption-form {
+}
+
+.post-form p {
+    margin-bottom: .8em;
 }
