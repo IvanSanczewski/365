@@ -58,7 +58,16 @@ function displayVisions() {
     }
 }
 
-
-
 // fetchData();
 displayVisions();
+
+
+const addPost = document.querySelector('.addNewPost');
+const form = document.querySelector('.post-form');
+
+function displayAddPost(){
+    form.classList.toggle('hidden');
+    console.log(form);
+}
+
+addPost.addEventListener('click', displayAddPost);
