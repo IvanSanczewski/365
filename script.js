@@ -64,6 +64,7 @@ displayVisions();
 
 const addPost = document.querySelector('.addNewPost');
 const form = document.querySelector('.post-form');
+(addPost === null)? console.log('null') : console.log('!null');
 
 function displayAddPost(){
     form.classList.toggle('hidden');

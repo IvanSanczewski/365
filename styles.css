@@ -175,6 +175,12 @@ footer {
     display: none;
 }
 
+/* Increase specificity by adding a parent selector */
+form.post-form.hidden {
+    display: none;
+}
+
+
 .post-form {
     position: absolute;
     left: var(--nav-width);
