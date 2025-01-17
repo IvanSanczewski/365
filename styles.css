@@ -218,13 +218,17 @@ footer {
 
     color: #eee;
     background-color: #222;
+    font-family: 'New times roman', monospace;
+
     border-radius: .25em;
     border: none;
 }
 
 .file-btn {
     width: 226.66px;
+    font-size: 17.333px;
     text-align: center;
+
 }
 
 input[type="file"] {
