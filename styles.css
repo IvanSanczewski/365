@@ -166,12 +166,6 @@ footer {
     width: 100%;
 }
 
-.caption {
-    margin-top: 1em;
-    text-align: end;
-}
-
-
 
 /* Increase specificity by adding a parent selector */
 /* form.post-form.hidden {
@@ -197,25 +191,47 @@ footer {
 }
 
 .post-form textarea, .password {
-    padding-left: 0.25em;
+    padding: 0.25em;
     
     background-color: #eee;
-    border-radius: 0.15em;
+    border-radius: 0.25em;
     border: none;   
     border-bottom: solid 1px #333; 
     
     resize: none;
 }
 
+.btn:focus, textarea:focus, input:focus, a:-webkit-any-link  {
+    outline: none;
+} 
+
 .post-form p {
     margin-bottom: .8em;
 }
 
+.password:focus {
+    outline: none;
+}
+
 .btn {
+    padding: .25em;
+
+    color: #eee;
+    background-color: #222;
+    border-radius: .25em;
     border: none;
 }
 
+.file-btn {
+    width: 226.66px;
+    text-align: center;
+}
+
+input[type="file"] {
+    display: none;
+}
 
 .hidden {
     display: none;
 }
+
