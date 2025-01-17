@@ -171,14 +171,12 @@ footer {
     text-align: end;
 }
 
-.hidden {
-    display: none;
-}
+
 
 /* Increase specificity by adding a parent selector */
-form.post-form.hidden {
+/* form.post-form.hidden {
     display: none;
-}
+} */
 
 
 .post-form {
@@ -194,13 +192,11 @@ form.post-form.hidden {
 .post-form div {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-end;
+    gap: 1em;
 }
 
-
-.post-form input, .post-form textarea {
-    align-self: flex-end;
-    
+.post-form textarea, .password {
     padding-left: 0.25em;
     
     background-color: #eee;
@@ -211,35 +207,15 @@ form.post-form.hidden {
     resize: none;
 }
 
-.vision-form input {
-    background-color: white;
-    border: none;
-}
-
-.vision-form {
-    /* display: flex;
-    flex-direction: column;
-    justify-content: space-between; */
-    
-    background-color: lightseagreen;
-}
-
-
 .post-form p {
     margin-bottom: .8em;
 }
 
-.caption-form {
-
-    background-color: lightskyblue;
+.btn {
+    border: none;
 }
 
-.password-form {
-    /* align-self: flex-end; */
 
-    background-color: lightskyblue;
-}
-
-.password-form :first-child {
-    margin-bottom: 1.5em;
+.hidden {
+    display: none;
 }
