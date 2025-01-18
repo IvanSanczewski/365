@@ -33,6 +33,7 @@ nav {
     height: calc(100vh - var(--footer-height) - var(--header-height));
     width: var(--nav-width);
     padding-top: 2em;
+
 }
 
 header {
@@ -47,6 +48,7 @@ h1 {
     /* background-color: aqua; */
     /* margin: .35em; */
     text-align: center;
+    font-weight: 300;
 }
 
 .container-row {
@@ -63,9 +65,16 @@ ul {
     list-style: none;
 }
 
-li {
+nav li {
     text-decoration: none;
     cursor: pointer;
+
+    font-size: .85em;
+    font-weight: 100;
+}
+
+.home-link {
+    font-size: .95em;
 }
 
 a {
@@ -91,6 +100,10 @@ footer {
 
     color: #eee;
     background-color: #333;
+}
+
+footer p {
+    font-size: .75em;
 }
 
 #menu {
@@ -163,6 +176,15 @@ footer {
 
     margin: 0 1em 0 1em;
     min-width: 375px;
+}
+
+.context p, span {
+    font-size: .8em;
+    color: #222;
+}
+
+.context p:last-child {
+    text-align: end;
 }
 
 .text {
