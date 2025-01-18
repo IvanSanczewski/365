@@ -229,10 +229,15 @@ footer {
     font-size: 17.333px;
     text-align: center;
 
+    display: inline-block
 }
 
 input[type="file"] {
     display: none;
+}
+
+label, .selected-file {
+    display: inline-block;
 }
 
 .hidden {
