@@ -74,4 +74,15 @@ function displayAddPost(){
 addPost.addEventListener('click', displayAddPost);
 
 
-// Display the file name
+
+// Display the file name  
+ 
+document.addEventListener("DOMContentLoaded", () =>  {
+    const fileInput = document.getElementById('file-upload');
+    const fileNameContainer = document.querySelector('.selected-file');
+
+    fileInput.addEventListener("change", event => {
+        const fileName = event.target.files.length > 0 ? event.target.files[0].name : "No file selected"
+        fileNameContainer.textContent = fileName;
+    });
+});
