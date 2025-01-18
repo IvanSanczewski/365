@@ -72,3 +72,6 @@ function displayAddPost(){
 }
 
 addPost.addEventListener('click', displayAddPost);
+
+
+// Display the file name

@@ -183,7 +183,7 @@ footer {
     gap: 2em;
 }
 
-.post-form div {
+.post-form>div {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -228,7 +228,7 @@ footer {
     border: none;
 }
 
-.file-upload-container .file-btn {
+.file-btn {
     display: inline-block;
     vertical-align: middle;
     
@@ -237,7 +237,7 @@ footer {
     text-align: center;
 }
 
-.file-upload-container .selected-file {
+.selected-file {
     display: inline-block;
     vertical-align: middle;
 }
@@ -257,4 +257,3 @@ label, .selected-file {
 .hidden {
     display: none;
 }
-
