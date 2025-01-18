@@ -209,27 +209,37 @@ footer {
     margin-bottom: .8em;
 }
 
-.password:focus {
-    outline: none;
+/* .vision-form {
+} */
+
+.file-upload-container {
+    display: inline-block;
+    white-space: nowrap;
 }
 
 .btn {
     padding: .25em;
-
+    
     color: #eee;
     background-color: #222;
     font-family: 'New times roman', monospace;
-
+    
     border-radius: .25em;
     border: none;
 }
 
-.file-btn {
+.file-upload-container .file-btn {
+    display: inline-block;
+    vertical-align: middle;
+    
     width: 226.66px;
     font-size: 17.333px;
     text-align: center;
+}
 
-    display: inline-block
+.file-upload-container .selected-file {
+    display: inline-block;
+    vertical-align: middle;
 }
 
 input[type="file"] {
@@ -238,6 +248,10 @@ input[type="file"] {
 
 label, .selected-file {
     display: inline-block;
+}
+
+.password:focus {
+    outline: none;
 }
 
 .hidden {
