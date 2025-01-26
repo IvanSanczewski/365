@@ -4,26 +4,49 @@ import data from './mockup.json';
 const visions = document.getElementById('visions');
 console.log(typeof data, data);
 
+// async function fetchData() {
+//     try {
+//         const response = await fetch('./mockup.json');
+//         if (!response.ok) {
+//             console.log('IF');
+//             throw new Error(`HTTP error! Status: ${response.status}`);
+//         }
+//         console.log('NOT IF');
+//         console.log(typeof response, response);
+//         return await response.json();
+//     } catch (error) {
+//         console.log('CATCH');
+//         console.error('Error fetching data:', error);
+//     }
+// }
+
+
 async function fetchData() {
     try {
         const response = await fetch('./mockup.json');
         if (!response.ok) {
-            console.log('IF');
+            console.log('IF - NO RESPONSE');
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        console.log('NOT IF');
+        
+        console.log('NOT IF - RESPONSE!!');
         console.log(typeof response, response);
-        return await response.json();
+        
+        const data = await response.json();
+        const visionsTotal = data.length;
+        console.log(visionsTotal);
+        
+        
+        document.documentElement.style.setProperty('--visions-total', visionsTotal);
+        console.log(`CSS variable --visions-total set to: ${visionsTotal}`);
+
+        
     } catch (error) {
         console.log('CATCH');
         console.error('Error fetching data:', error);
     }
 }
 
-
-const createNodeItem = item => {
-    const div = document.createElement('div');
-}
 
 
 function displayVisions() {
@@ -58,8 +81,7 @@ function displayVisions() {
     }
 }
 
-// fetchData();
-displayVisions();
+
 
 
 const addPost = document.querySelector('.addNewPost');
@@ -86,3 +108,7 @@ document.addEventListener("DOMContentLoaded", () =>  {
         fileNameContainer.textContent = fileName;
     });
 });
+
+
+fetchData();
+displayVisions();

@@ -2,6 +2,8 @@
     --footer-height: 3em;
     --nav-width: 215px;
     --header-height: 6em;
+
+    --visions-total: 0;
 }
 
 * {
@@ -148,7 +150,7 @@ footer p {
 
 #visions{
     display: grid;
-    grid-template-columns: repeat(365, minmax(auto, auto));
+    grid-template-columns: repeat(var(--visions-total), minmax(auto, auto));
     gap: .5em;
     width: calc(100vw - var(--nav-width));
 
