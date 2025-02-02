@@ -159,15 +159,19 @@ footer p {
 }
 
 .vision-element {
-    /* grid-column: span 1; */
-    width: auto;
     display: flex;
+    align-items: stretch;
+
+    width: auto;
     background: linear-gradient(90deg, #eee, #fff);
 }
 
 .picture {
-    width: auto; /* El ancho dependerá del objeto contenidio */
+    flex: 0 0 auto;
+
     height: 50vh;
+    width: auto; /* El ancho dependerá del objeto contenidio */
+
     object-fit: contain;
 }
 
@@ -175,10 +179,25 @@ footer p {
     display: flex;
     flex-direction: column;
     justify-content: center;
-
+    flex: auto;
+    
     margin: 0 1em 0 1em;
-    min-width: 375px;
+    /*width:  clamp(400px, 500px, 40vw); Min: 400px, Preferred: 40vw, Max: 40vw */
+    width:  555px;
+    max-height: 50vh;
+    overflow-y: hidden;
 }
+/* 
+.context {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    margin: 0 1em 0 1em;
+    width: 30vw;
+    max-height: 50vh;
+    overflow-y: hidden;
+} */
 
 .context p, span {
     font-size: .8em;
