@@ -20,7 +20,7 @@ console.log(typeof data, data);
 //     }
 // }
 
-
+// Sets the CSS var --visions-total from the lenght of the data array 
 async function fetchData() {
     try {
         const response = await fetch('./mockup.json');
@@ -48,7 +48,7 @@ async function fetchData() {
 }
 
 
-
+// Creates the HTML nodes and to display the posts content
 function displayVisions() {
     visions.innerHTML = '';
     for (const item in data) {
@@ -88,6 +88,7 @@ const addPost = document.querySelector('.addNewPost');
 const form = document.querySelector('.post-form');
 (addPost === null)? console.log('null') : console.log('!null');
 
+// Toggles the visibility of the form
 function displayAddPost(){
     form.classList.toggle('hidden');
     console.log(form);
@@ -97,8 +98,7 @@ addPost.addEventListener('click', displayAddPost);
 
 
 
-// Display the file name  
- 
+// Displays the selected file name in the form  
 document.addEventListener("DOMContentLoaded", () =>  {
     const fileInput = document.getElementById('file-upload');
     const fileNameContainer = document.querySelector('.selected-file');
@@ -108,6 +108,51 @@ document.addEventListener("DOMContentLoaded", () =>  {
         fileNameContainer.textContent = fileName;
     });
 });
+
+
+
+// Handles the form submision
+async function postVision(event) {
+    event.preventDefault(); // Prevents the form to be submited by default
+
+    const formData = {
+        iamge: document.getElementById('file-upload').files[0]?.name || "", // Gets the file name
+        text: document.getElementById('text').value,
+        location: document.getElementById('location').value,
+        year: document.getElementById('year').value,
+        id: Date.now() // Generates a unique ID based on the timestamp
+    };
+
+    try {
+        const response = await fetch('https://365.hostinger.com/api.php', {
+            method: 'POST', 
+            headers: {'Content-Type': 'application/json',},
+            body: JSON.stringify(formData),
+
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response failure');
+        }
+
+        const result = await response.json();
+        console.log(result.message); 
+        alert('New vision successfully added!');
+        location.reload(); // Reloads the page to display the new post
+
+    } catch (error) {
+        console.error('Error submiting form:', error);
+        alert('Failed to add post. Please try again');
+
+    }
+}
+
+
+
+// Attaches the submitForm function to the forms submit event
+form.addEventListener('submit', postVision)
+
+
 
 
 fetchData();
