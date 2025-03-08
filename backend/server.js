@@ -1,80 +1,76 @@
 import express from 'express';
 import cors from 'cors';
 import multer from 'multer';
+import path from 'path';
 import fs from 'fs';
 
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-
-
-// Setting file's routes (ES6)
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+console.log(__dirname);
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static(join(__dirname, 'public'))); // Serving static files
+
+// Serves the frontend
+// app.use(express.static(path.join(__dirname, '../public'))); 
+app.use(express.static(path.join('C:/Users/Ivan/Documents/IT/365/public'))); 
+
+// Serves index.html
+app.get('/', (req, res) => {
+  // res.sendFile(path.join(__dirname, '../public/index.html'));
+  res.sendFile(path.join('C:/Users/Ivan/Documents/IT/365/public/index.html'));
+});
 
 
-// Setting multer to upload images
+// Sets multer for DEV
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, join(__dirname, 'public', 'uploads'));
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname)
-    }
+  destination: (req, file, cb) => {
+    // cb(null, path.join(__dirname, '../public/uploads'));
+    cb(null, path.join('C:/Users/Ivan/Documents/IT/365/public/uploads'));
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
 });
 const upload = multer({ storage });
 
-
-// Reading initially stored data from data.json
-let data = [];
-const dataPath = join(__dirname, 'data.json');
-
-try {
-    data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
-} catch (error) {
-    console.error('Error reading data.json:', error);
-}
-
-
-// GET route to retreive all posts
+// Path for mockup.json
 app.get('/api/posts', (req, res) => {
+  try {
+    // const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'mockup.json'), 'utf8'));
+    const data = JSON.parse(fs.readFileSync(path.join('C:/Users/Ivan/Documents/IT/365/backend/mockup.json'), 'utf8'));
     res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al leer mockup.json' });
+  }
 });
 
-
-// POST route to create new posts
+// Path to update posts during DEV
 app.post('/api/posts', upload.single('image'), (req, res) => {
-    const { text, location, year, password } = req.body;
-
-    // Password validation
-    if (password !== 'kapuscinski') {
-        return res.status(401).json({ error: 'wrong password'})
-    }
-
-    // Creating new post
+  try {
     const newPost = {
-        id: Date.now(),
-        image: `/uploads/${req.file.filename}`,
-        text,
-        location,
-        year
+      id: Date.now(),
+      image: `/uploads/${req.file.filename}`,
+      text: req.body.text,
+      location: req.body.location,
+      year: req.body.year
     };
 
+    // const dataPath = path.join(__dirname, 'mockup.json');
+    const dataPath = path.join('C:/Users/Ivan/Documents/IT/365/backend/mockup.json');
+    const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
     data.push(newPost);
 
-    // Saving the new post to data.json
     fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
+    res.json({ message: 'Post agregado (desarrollo)!' });
 
-    res.json({ message: 'vision succcessfully added!' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al guardar el post' });
+  }
 });
 
-
-// Starting the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`server running at http://localhost:${PORT}`);
+  console.log(`Servidor en http://localhost:${PORT}`);
 });

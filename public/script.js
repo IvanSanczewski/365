@@ -4,24 +4,22 @@ import data from './mockup.json';
 const visions = document.getElementById('visions');
 console.log(typeof data, data);
 
-// async function fetchData() {
-//     try {
-//         const response = await fetch('./mockup.json');
-//         if (!response.ok) {
-//             console.log('IF');
-//             throw new Error(`HTTP error! Status: ${response.status}`);
-//         }
-//         console.log('NOT IF');
-//         console.log(typeof response, response);
-//         return await response.json();
-//     } catch (error) {
-//         console.log('CATCH');
-//         console.error('Error fetching data:', error);
-//     }
-// }
-
 // Sets the CSS var --visions-total from the lenght of the data array 
 async function fetchData() {
+
+    // window.ENV needs to be set in index.html
+    if (window.ENV === 'development') {
+        // in DEV environment uses mockup.json through Express
+        const response = await fetch('http://localhost:3000/api/posts');
+        const data = await response.json();
+        displayVisions(data);
+    } else {
+        // in PRODUCTION environment uses FIREBASE
+        const snapshot = await firebase.database().ref('posts').once('value');
+        const data = snapshot.val() || [];
+        displayVisions(data);
+    }
+
     try {
         const response = await fetch('http:localhost:3000/api/posts');
         const data = await response.json();
@@ -35,31 +33,6 @@ async function fetchData() {
     } catch (error) {
         console.error('error fetching data:', error);
     }
-
-
-    // try {
-    //     const response = await fetch('./mockup.json');
-    //     if (!response.ok) {
-    //         console.log('IF - NO RESPONSE');
-    //         throw new Error(`HTTP error! Status: ${response.status}`);
-    //     }
-        
-    //     console.log('NOT IF - RESPONSE!!');
-    //     console.log(typeof response, response);
-        
-    //     const data = await response.json();
-    //     const visionsTotal = data.length;
-    //     console.log(visionsTotal);
-        
-        
-    //     document.documentElement.style.setProperty('--visions-total', visionsTotal);
-    //     console.log(`CSS variable --visions-total set to: ${visionsTotal}`);
-
-        
-    // } catch (error) {
-    //     console.log('CATCH');
-    //     console.error('Error fetching data:', error);
-    // }
 }
 
 
@@ -101,7 +74,6 @@ function displayVisions(data) {
 }
 
 
-
 const addPost = document.querySelector('.addNewPost');
 const form = document.querySelector('.post-form');
 (addPost === null)? console.log('null') : console.log('!null');
@@ -130,66 +102,81 @@ document.addEventListener("DOMContentLoaded", () =>  {
 
 
 // Handles the form submision
-async function postVision(event) {
-    event.preventDefault(); // Prevents the form to be submited by default
+// async function postVision(event) {
+//     event.preventDefault(); // Prevents default form submit
 
-    const formData= new FormData();
-    formData.append('image', document.getElementById('file-upload').files[0]);
-    formData.append('text', document.getElementById('text').value);
-    formData.append('location', document.getElementById('location').value);
-    formData.append('year', document.getElementById('year').value);
-    formData.append('password', document.getElementById('password').value);
+//     const formData= new FormData();
+//     formData.append('image', document.getElementById('file-upload').files[0]);
+//     formData.append('text', document.getElementById('text').value);
+//     formData.append('location', document.getElementById('location').value);
+//     formData.append('year', document.getElementById('year').value);
+//     formData.append('password', document.getElementById('password').value);
+
     
-    try {
+//     try {
+//         const response = await fetch('http://localhost:3000/api/posts', {
+//             method: 'POST',
+//             body: formData
+//         });
+
+//         if (!response.ok) throw new Error('Network response failure');
+
+//         const result = await response.json();
+//         alert(result.message);
+//         location.reload();
+//     } catch (error) {
+    //         console.log('error:', error);
+    //         alert('there was an error while uploading the vision');
+    //     }
+// }
+    
+async function postVision(event) {
+    event.preventDefault(); // Prevents default form submit
+    
+    const file = document.getElementById('file-upload').files[0];
+    const text = document.getElementById('text').value;
+    const location = document.getElementById('location').value;
+    const year = document.getElementById('year').value;
+    const password = document.getElementById('password').value;
+    
+    if (password !== 'kapuscinski') {
+        alert('Contraseña incorrecta');
+        return;
+    }
+    
+    if (window.ENV === 'development') {
+        // Uses EXPRESS for DEV
+        const formData = new FormData();
+        formData.append('image', file);
+        formData.append('text', text);
+        formData.append('location', location);
+        formData.append('year', year);
+        formData.append('password', password);
+        
         const response = await fetch('http://localhost:3000/api/posts', {
             method: 'POST',
             body: formData
         });
+        // Handles the response, showing a possible 4XX error
+        if (!response.ok) {
+            const errorText = await response.text()
+;            throw new Error(`Error ${response.status}: ${errorText}`);
+        }
+    } else {
+        // Uses FIREBASE for PROD
+        const storageRef = firebase.storage().ref(`images/${Date.now()}_${file.name}`);
+        await storageRef.put(file);
+        const imageUrl = await storageRef.getDownloadURL();
 
-        if (!response.ok) throw new Error('Network response failure');
-        
-        const result = await response.json();
-        alert(result.message);
-        location.reload();
-    } catch (error) {
-        console.log('error:', error);
-        alert('there was an error while uploading the vision');
+        await firebase.database().ref('posts').push({
+            id: Date.now(),
+            image: imageUrl,
+            text,
+            location,
+            year
+        });
     }
-
-    
-    
-    // const formData = {
-    //     iamge: document.getElementById('file-upload').files[0]?.name || "", // Gets the file name
-    //     text: document.getElementById('text').value,
-    //     location: document.getElementById('location').value,
-    //     year: document.getElementById('year').value,
-    //     id: Date.now() // Generates a unique ID based on the timestamp
-    // };
-
-    // try {
-    //     const response = await fetch('https://365.hostinger.com/api.php', {
-    //         method: 'POST', 
-    //         headers: {'Content-Type': 'application/json',},
-    //         body: JSON.stringify(formData),
-
-    //     });
-
-    //     if (!response.ok) {
-    //         throw new Error('Network response failure');
-    //     }
-
-    //     const result = await response.json();
-    //     console.log(result.message); 
-    //     alert('New vision successfully added!');
-    //     location.reload(); // Reloads the page to display the new post
-
-    // } catch (error) {
-    //     console.error('Error submiting form:', error);
-    //     alert('Failed to add post. Please try again');
-
-    // }
 }
-
 
 
 // Attaches the submitForm function to the forms submit event

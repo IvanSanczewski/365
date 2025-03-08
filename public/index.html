@@ -1,83 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>a year diary</title>
-    <link rel="stylesheet" href="styles.css">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>a year diary</title>
+        <link rel="stylesheet" href="styles.css">
 
-    // sets the enviroment to DEVELOPMENT >> set it to PRODUCTION on deployment
-    <script>window.ENV = 'development';</script>
+        // sets the enviroment to DEVELOPMENT >> set it to PRODUCTION on deployment
+        <script>window.ENV = 'development';</script>
 
-</head>
-<body>
-    
-    <header>
-        <h1>a journey in 365 visions</h1>
-    </header>
-    
-    <div class="container-row">
-        <nav>           
-            <ul id="menu">
-                <div id="main-menu">
-                    <span class="close-menu hidden">X</span>
-                    <li class="home-link"><a href="https://www.starwars.com/" target="_blank">Ivan Sanczewski</a></li>
-                    <li>pictures</li>
-                    <li>thoughts</li>
-                    <li>categories</li>
-                    <li>search</li>
-                </div>
-                <li class="addNewPost">add new</li>
-            </ul>
-        </nav>
-    
+    </head>
+    <body>
         
-        <div class="container-col">
-            
-            <main>
-                <ul id="visions">
-                    <li class="vision-element">
-                        <div class="picture">here goes the picture
-                            <img src="" alt="">
-                        </div>
-                        <div class="context">
-                            <p class="text">here goes the text</p>
-                            <p class="caption">here goes the caption</p>
-                        </div>
-                    </li>
+        <header>
+            <h1>a journey in 365 visions</h1>
+        </header>
+        
+        <div class="container-row">
+            <nav>           
+                <ul id="menu">
+                    <div id="main-menu">
+                        <span class="close-menu hidden">X</span>
+                        <li class="home-link"><a href="https://www.starwars.com/" target="_blank">Ivan Sanczewski</a></li>
+                        <li>pictures</li>
+                        <li>thoughts</li>
+                        <li>categories</li>
+                        <li>search</li>
+                    </div>
+                    <li class="addNewPost">add new</li>
                 </ul>
-            </main>
+            </nav>
+        
+            
+            <div class="container-col">
+                
+                <main>
+                    <ul id="visions">
+                        <li class="vision-element">
+                            <div class="picture">here goes the picture
+                                <img src="" alt="">
+                            </div>
+                            <div class="context">
+                                <p class="text">here goes the text</p>
+                                <p class="caption">here goes the caption</p>
+                            </div>
+                        </li>
+                    </ul>
+                </main>
+            </div>
         </div>
-    </div>
 
-<form class="post-form hidden">
-    <div class="vision-form">
-        <div class="file-upload-container">
-            <label for="file-upload" class="btn file-btn">pick up a vision</label>
-            <span class="selected-file">...your selected vision</span>
-        </div>
-        <input type="file" name="image" id="file-upload"> <!--try label-->
-        <textarea name="text" id="text" cols="75" rows="5" placeholder="insert text..."></textarea>
-    </div>
-    
-    <div class="caption-form">
-        <textarea name="location" id="location" cols="20" rows="1" placeholder="location"></textarea>
-        <textarea name="year" id="year" cols="20" rows="1" placeholder="year"></textarea>
-    </div>
+        <form class="post-form hidden">
+            <div class="vision-form">
+                <div class="file-upload-container">
+                    <label for="file-upload" class="btn file-btn">pick up a vision</label>
+                    <span class="selected-file">...your selected vision</span>
+                </div>
+                <input type="file" name="image" id="file-upload"> <!--try label-->
+                <textarea name="text" id="text" cols="75" rows="5" placeholder="insert text..."></textarea>
+            </div>
+            
+            <div class="caption-form">
+                <textarea name="location" id="location" cols="20" rows="1" placeholder="location"></textarea>
+                <textarea name="year" id="year" cols="20" rows="1" placeholder="year"></textarea>
+            </div>
 
-    <div class="password-form">
-        <input class="password" type="password" name="password" id="password" placeholder="password">
-        <button class="btn">publish</button>
-    </div>
-</form>
+            <div class="password-form">
+                <input class="password" type="password" name="password" id="password" placeholder="password">
+                <button class="btn">publish</button>
+            </div>
+        </form>
 
-    
+        
 
-    <footer>
-        <p>© Ivan Sanczewski, 2024</p>
-    </footer>
-    
-    <script type="module" src="script.js"></>
+        <footer>
+            <p>© Ivan Sanczewski, 2024</p>
+        </footer>
+        
+        <script type="module" src="script.js"></script>
 
-</body>
+    </body>
 </html>
