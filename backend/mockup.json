@@ -1,23 +1,23 @@
 [
-    {
-        "id": 201224,
-        "image": "/assets/ISP_LITUANIA_11757_Edit.jpg",
-        "text": "No puedor! Ese pedazo de amatomaa sesuaaaal!",
-        "location": "vilnius",
-        "year": 2021
-    },
-    {
-        "id": 191224,
-        "image": "/assets/essauira.jpg",
-        "text": "Lorem fistrum al ataquerl a gramenawer está la cosa muy malar.",
-        "location": "essaouira",
-        "year": 2008
-    },
-    {
-        "id": 201224,
-        "image": "/assets/ISP_LITUANIA_11757_Edit.jpg",
-        "text": "No puedor! Ese pedazo de amatomaa sesuaaaal!",
-        "location": "vilnius",
-        "year": 2021
-    }
+  {
+    "id": 1741794750043,
+    "image": "/uploads/1741794750029-ISP_ISP_RIGA_10164.jpg",
+    "text": "The will to find joy in every moment of life. The joy to be a child.",
+    "location": "Riga",
+    "year": "2024"
+  },
+  {
+    "id": 1741796628084,
+    "image": "/uploads/1741796628081-ISP_STREET_HAPPENS_90401.jpg",
+    "text": "some image in black and white",
+    "location": "Vilnius",
+    "year": "2024"
+  },
+  {
+    "id": 1741796686631,
+    "image": "/uploads/1741796686629-ISP_STREET_HAPPENS_91106.jpg",
+    "text": "I will write the wrong password",
+    "location": "hs",
+    "year": "hsfgkajh"
+  }
 ]

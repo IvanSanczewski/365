@@ -1,40 +1,51 @@
-// import data from './mockup.json' assert { type: 'json' };
-import data from './mockup.json';
+console.log('Environment:', window.ENV);
 
 const visions = document.getElementById('visions');
-console.log(typeof data, data);
+// console.log(typeof data, data);
 
 // Sets the CSS var --visions-total from the lenght of the data array 
+// async function fetchData() {
+
+//     // window.ENV needs to be set in index.html
+//     if (window.ENV === 'development') {
+        
+//         // in DEV environment uses mockup.json through Express
+//         const response = await fetch('http://localhost:3000/api/posts');
+//         const data = await response.json();
+//         displayVisions(data);
+//     } else {
+//         // in PRODUCTION environment uses FIREBASE
+//         const snapshot = await firebase.database().ref('posts').once('value');
+//         const data = snapshot.val() || [];
+//         displayVisions(data);
+//     }
+
+//     try {
+//         const response = await fetch('http://localhost:3000/api/posts');
+//         const data = await response.json();
+//         const visionsTotal = data.length;
+
+//         document.documentElement.style.setProperty('--visions-total', visionsTotal);
+//         console.log(`CSS variable --visions-total set to: ${visionsTotal}`);
+
+//         displayVisions(data); // Sends data as params to the function to display them
+
+//     } catch (error) {
+//         console.error('error fetching data:', error);
+//     }
+// }
 async function fetchData() {
-
-    // window.ENV needs to be set in index.html
-    if (window.ENV === 'development') {
-        // in DEV environment uses mockup.json through Express
-        const response = await fetch('http://localhost:3000/api/posts');
-        const data = await response.json();
-        displayVisions(data);
-    } else {
-        // in PRODUCTION environment uses FIREBASE
-        const snapshot = await firebase.database().ref('posts').once('value');
-        const data = snapshot.val() || [];
-        displayVisions(data);
-    }
-
     try {
-        const response = await fetch('http:localhost:3000/api/posts');
+        const response = await fetch('http://localhost:3000/api/posts');
+        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
         const data = await response.json();
-        const visionsTotal = data.length;
-
-        document.documentElement.style.setProperty('--visions-total', visionsTotal);
-        console.log(`CSS variable --visions-total set to: ${visionsTotal}`);
-
-        displayVisions(data); // Sends data as params to the function to display them
-
+        document.documentElement.style.setProperty('--visions-total', data.length);
+        displayVisions(data);
     } catch (error) {
-        console.error('error fetching data:', error);
+        console.error('Error:', error);
+        alert('Error al cargar los posts');
     }
 }
-
 
 
 
@@ -76,7 +87,14 @@ function displayVisions(data) {
 
 const addPost = document.querySelector('.addNewPost');
 const form = document.querySelector('.post-form');
-(addPost === null)? console.log('null') : console.log('!null');
+
+// Verificar si el elemento existe
+// (addPost === null)? console.log('null') : console.log('!null');
+if (!addPost) {
+    console.error('Elemento .addNewPost no encontrado');
+  } else {
+    addPost.addEventListener('click', displayAddPost);
+  }
 
 // Toggles the visibility of the form
 function displayAddPost(){
@@ -99,36 +117,6 @@ document.addEventListener("DOMContentLoaded", () =>  {
     });
 });
 
-
-
-// Handles the form submision
-// async function postVision(event) {
-//     event.preventDefault(); // Prevents default form submit
-
-//     const formData= new FormData();
-//     formData.append('image', document.getElementById('file-upload').files[0]);
-//     formData.append('text', document.getElementById('text').value);
-//     formData.append('location', document.getElementById('location').value);
-//     formData.append('year', document.getElementById('year').value);
-//     formData.append('password', document.getElementById('password').value);
-
-    
-//     try {
-//         const response = await fetch('http://localhost:3000/api/posts', {
-//             method: 'POST',
-//             body: formData
-//         });
-
-//         if (!response.ok) throw new Error('Network response failure');
-
-//         const result = await response.json();
-//         alert(result.message);
-//         location.reload();
-//     } catch (error) {
-    //         console.log('error:', error);
-    //         alert('there was an error while uploading the vision');
-    //     }
-// }
     
 async function postVision(event) {
     event.preventDefault(); // Prevents default form submit
