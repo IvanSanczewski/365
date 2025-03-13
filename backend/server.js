@@ -19,13 +19,13 @@ app.use(express.static(path.join(__dirname, '../public'))); // Ruta relativa a l
 
 // 4. Ruta principal: sirve index.html
 app.get('/', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../public/index.html')); // Ruta absoluta a index.html
-    try {
-        const data = JSON.parse(fs.readFileSync('C:/Users/Ivan/Documents/IT/365/backend/mockup.json', 'utf8'));
-        res.json(data);
-    } catch (error) {
-        res.status(500).json({ error: 'Error al leer mockup.json' });
-    }    
+    res.sendFile(path.join(__dirname, '../public/index.html')); // Ruta absoluta a index.html
+    // try {
+    //     const data = JSON.parse(fs.readFileSync('C:/Users/Ivan/Documents/IT/365/backend/mockup.json', 'utf8'));
+    //     res.json(data);
+    // } catch (error) {
+    //     res.status(500).json({ error: 'Error al leer mockup.json' });
+    // }    
 });
 
 // 5. Configurar Multer para subir imágenes
