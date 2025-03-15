@@ -1,46 +1,24 @@
 console.log('Environment:', window.ENV);
 
 const visions = document.getElementById('visions');
-// console.log(typeof data, data);
 
-// Sets the CSS var --visions-total from the lenght of the data array 
-// async function fetchData() {
-
-//     // window.ENV needs to be set in index.html
-//     if (window.ENV === 'development') {
-        
-//         // in DEV environment uses mockup.json through Express
-//         const response = await fetch('http://localhost:3000/api/posts');
-//         const data = await response.json();
-//         displayVisions(data);
-//     } else {
-//         // in PRODUCTION environment uses FIREBASE
-//         const snapshot = await firebase.database().ref('posts').once('value');
-//         const data = snapshot.val() || [];
-//         displayVisions(data);
-//     }
-
-//     try {
-//         const response = await fetch('http://localhost:3000/api/posts');
-//         const data = await response.json();
-//         const visionsTotal = data.length;
-
-//         document.documentElement.style.setProperty('--visions-total', visionsTotal);
-//         console.log(`CSS variable --visions-total set to: ${visionsTotal}`);
-
-//         displayVisions(data); // Sends data as params to the function to display them
-
-//     } catch (error) {
-//         console.error('error fetching data:', error);
-//     }
-// }
 async function fetchData() {
     try {
-        const response = await fetch('http://localhost:3000/api/posts');
-        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
-        const data = await response.json();
-        document.documentElement.style.setProperty('--visions-total', data.length);
-        displayVisions(data);
+        if ( window.ENV === 'develpment') {
+            const response = await fetch('http://localhost:3000/api/posts');
+            const data = await response.json();
+            // document.documentElement.style.setProperty('--visions-total', data.length);
+            console.log(data);   
+            displayVisions(data);
+        } else {
+            const db = firebase.firestore();
+            const querySnapshot = await db.collection('posts').get();
+            const data = querySnapshot.docs.map(doc => doc.data());
+            // document.documentElement.style.setProperty('--visions-total', data.length); // wil that work? It needs to calculate the total amount of posts and asign this value to the CSS var --visions-total 
+            console.log(data);   
+            displayVisions(data);
+        }
+
     } catch (error) {
         console.error('Error:', error);
         alert('Error al cargar los posts');
@@ -92,9 +70,9 @@ const form = document.querySelector('.post-form');
 // (addPost === null)? console.log('null') : console.log('!null');
 if (!addPost) {
     console.error('Elemento .addNewPost no encontrado');
-  } else {
+} else {
     addPost.addEventListener('click', displayAddPost);
-  }
+}
 
 // Toggles the visibility of the form
 function displayAddPost(){
@@ -132,37 +110,45 @@ async function postVision(event) {
         return;
     }
     
-    if (window.ENV === 'development') {
-        // Uses EXPRESS for DEV
-        const formData = new FormData();
-        formData.append('image', file);
-        formData.append('text', text);
-        formData.append('location', location);
-        formData.append('year', year);
-        formData.append('password', password);
-        
-        const response = await fetch('http://localhost:3000/api/posts', {
-            method: 'POST',
-            body: formData
-        });
-        // Handles the response, showing a possible 4XX error
-        if (!response.ok) {
-            const errorText = await response.text()
-;            throw new Error(`Error ${response.status}: ${errorText}`);
+    try {
+        if (window.ENV === 'development') {
+            // Uses EXPRESS for DEVELOPMENT
+            const formData = new FormData();
+            formData.append('image', file);
+            formData.append('text', text);
+            formData.append('location', location);
+            formData.append('year', year);
+            // formData.append('password', password);
+            
+            const response = await fetch('http://localhost:3000/api/posts', {
+                method: 'POST',
+                body: formData
+            });
+            alert('New vision added (development)');
+            displayVisions();
+            
+            // Handles the response, showing a possible 4XX error
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Error ${response.status}: ${errorText}`);
+            }
+        } else {
+            // Uses FIREBASE for PRODUCTION
+            const storageRef = firebase.storage().ref(`images/${Date.now()}_${file.name}`);
+            await storageRef.put(file);
+            const imageUrl = await storageRef.getDownloadURL();
+            
+            await firebase.database().ref('posts').push({
+                id: Date.now(),
+                image: imageUrl,
+                text,
+                location,
+                year
+            });
+            alert('New vision added (production)');
         }
-    } else {
-        // Uses FIREBASE for PROD
-        const storageRef = firebase.storage().ref(`images/${Date.now()}_${file.name}`);
-        await storageRef.put(file);
-        const imageUrl = await storageRef.getDownloadURL();
-
-        await firebase.database().ref('posts').push({
-            id: Date.now(),
-            image: imageUrl,
-            text,
-            location,
-            year
-        });
+    } catch (error) {
+        console.error('Error:', error);
     }
 }
 
