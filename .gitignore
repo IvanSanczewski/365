@@ -6,3 +6,6 @@ dist/
 
 # Node modules
 node_modules/
+
+# Firebase config
+firebase-config.js
