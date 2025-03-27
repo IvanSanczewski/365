@@ -1,11 +1,15 @@
 # Vite output directory (default is 'dist')
 dist/
 
+
 # Vite cache directory
 .vite/
+
 
 # Node modules
 node_modules/
 
-# Firebase config
-firebase-config.js
+
+# SUPABASE config
+about.js
+
