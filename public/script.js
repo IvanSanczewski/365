@@ -2,6 +2,11 @@ console.log('Environment:', window.ENV);
 
 const visions = document.getElementById('visions');
 
+const supabaseUrl = 'https://ohspctzvchqyfggelpus.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oc3BjdHp2Y2hxeWZnZ2VscHVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI3MzY1NDIsImV4cCI6MjA1ODMxMjU0Mn0.kGbF1bYG0tbxbdVhCgH_sFzwiKNNoXYamSJLPWikHfs   ';
+const supabase = createCliente( supabaseUrl, supabaseKey);
+
+
 async function fetchData() {
     try {
         if ( window.ENV === 'development') {
@@ -13,12 +18,16 @@ async function fetchData() {
             displayVisions(data);
         } else {
             console.log('ELSE STATEMENT');
-            const db = firebase.firestore();
-            const querySnapshot = await db.collection('posts').get();
-            const data = querySnapshot.docs.map(doc => doc.data());
-            // document.documentElement.style.setProperty('--visions-total', data.length); // wil that work? It needs to calculate the total amount of posts and asign this value to the CSS var --visions-total 
-            console.log(data);   
-            displayVisions(data);
+            const { data, error } = await supabase
+                .from('posts')
+                .select('*')
+
+            if (error) {
+                console.log('Error:', error);
+            } else {
+                document.documentElement.style.setProperty('--visions-total', data.length);
+                displayVisions(data);
+            }
         }
 
     } catch (error) {
@@ -135,7 +144,39 @@ async function postVision(event) {
                 throw new Error(`Error ${response.status}: ${errorText}`);
             }
         } else {
-            // Uses FIREBASE for PRODUCTION
+            // Uses SUPABASE for PRODUCTION
+            const fileName = `${Date.now()}_${file.name}`;
+            const { error: uploadError } = await supabase.storage
+                .from('visions')
+                .upload (fileName, file)
+
+            if (uploadError) {
+                alert('Error al subir la imagen: ' + uploadError.message);
+                return;
+            }
+
+            const { data: urlData } = supabase.storage
+                .from('visions')
+                .getPublicUrl(fileName);
+
+            const { error: insertError } = await supabase
+                .from('posts')
+                .insert([{
+                    image: urlData.publicUrl,
+                    text, 
+                    location,
+                    year
+                }]);
+
+            if (insertError) {
+                alert('Error al guardar el post: ' + insertError.message);
+            } else {
+                alert('Nuevo post publicado');
+                fetchData(); // loads the images once again
+            }
+
+
+
             const storageRef = firebase.storage().ref(`images/${Date.now()}_${file.name}`);
             await storageRef.put(file);
             const imageUrl = await storageRef.getDownloadURL();
