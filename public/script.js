@@ -1,16 +1,22 @@
 console.log('Environment:', window.ENV);
+import { createClient } from '@supabase/supabase-js';
 
 const visions = document.getElementById('visions');
 
-const supabaseUrl = 'https://ohspctzvchqyfggelpus.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oc3BjdHp2Y2hxeWZnZ2VscHVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI3MzY1NDIsImV4cCI6MjA1ODMxMjU0Mn0.kGbF1bYG0tbxbdVhCgH_sFzwiKNNoXYamSJLPWikHfs   ';
-const supabase = createCliente( supabaseUrl, supabaseKey);
+const supabaseUrl = 'https://tkilbmlfaxwtsssahgys.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRraWxibWxmYXh3dHNzc2FoZ3lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMyMzU1NTgsImV4cCI6MjA1ODgxMTU1OH0.Ru5jAMuLBI605-9lTJS599njqIA7RzLmcrXnM38SDOI';
+
+
+
+// const supabase = window.createClient( supabaseUrl, supabaseKey)
+const supabase = createClient(supabaseUrl, supabaseKey); 
 
 
 async function fetchData() {
     try {
         if ( window.ENV === 'development') {
             console.log('IF STATEMENT');
+
             const response = await fetch('http://localhost:3000/api/posts');
             const data = await response.json();
             document.documentElement.style.setProperty('--visions-total', data.length);
@@ -18,6 +24,7 @@ async function fetchData() {
             displayVisions(data);
         } else {
             console.log('ELSE STATEMENT');
+
             const { data, error } = await supabase
                 .from('posts')
                 .select('*')
@@ -114,22 +121,16 @@ async function postVision(event) {
     const text = document.getElementById('text').value;
     const location = document.getElementById('location').value;
     const year = document.getElementById('year').value;
-    const password = document.getElementById('password').value;
     
-    if (password !== 'kapuscinski') {
-        alert('Contraseña incorrecta');
-        return;
-    }
     
     try {
-        if (window.ENV === 'development') {
-            // Uses EXPRESS for DEVELOPMENT
+        // Uses EXPRESS for DEVELOPMENT
+        if (window.ENV === 'development') { 
             const formData = new FormData();
             formData.append('image', file);
             formData.append('text', text);
             formData.append('location', location);
             formData.append('year', year);
-            // formData.append('password', password);
             
             const response = await fetch('http://localhost:3000/api/posts', {
                 method: 'POST',
@@ -143,9 +144,12 @@ async function postVision(event) {
                 const errorText = await response.text();
                 throw new Error(`Error ${response.status}: ${errorText}`);
             }
+
+        // Uses SUPABASE for PRODUCTION
         } else {
-            // Uses SUPABASE for PRODUCTION
             const fileName = `${Date.now()}_${file.name}`;
+
+            // Uploads images to the Supabase Storage
             const { error: uploadError } = await supabase.storage
                 .from('visions')
                 .upload (fileName, file)
@@ -155,10 +159,12 @@ async function postVision(event) {
                 return;
             }
 
+            // Get the public URL
             const { data: urlData } = supabase.storage
                 .from('visions')
                 .getPublicUrl(fileName);
 
+            // Insert post in the table
             const { error: insertError } = await supabase
                 .from('posts')
                 .insert([{
@@ -174,25 +180,10 @@ async function postVision(event) {
                 alert('Nuevo post publicado');
                 fetchData(); // loads the images once again
             }
-
-
-
-            const storageRef = firebase.storage().ref(`images/${Date.now()}_${file.name}`);
-            await storageRef.put(file);
-            const imageUrl = await storageRef.getDownloadURL();
-            
-            // await firebase.database().ref('posts').push({
-            await firebase.firestore().collection("posts").add({
-                id: Date.now(),
-                image: imageUrl,
-                text,
-                location,
-                year
-            });
-            alert('New vision added (production)');
         }
     } catch (error) {
         console.error('Error:', error);
+        alert('Error: ' + error.message);
     }
 }
 
