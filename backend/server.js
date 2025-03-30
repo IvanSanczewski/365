@@ -19,13 +19,11 @@ app.use(express.static(path.join(__dirname, '../public'))); // Ruta relativa a l
 
 // 4. Ruta principal: sirve index.html
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/index.html')); // Ruta absoluta a index.html
-    // try {
-    //     const data = JSON.parse(fs.readFileSync('C:/Users/Ivan/Documents/IT/365/backend/mockup.json', 'utf8'));
-    //     res.json(data);
-    // } catch (error) {
-    //     res.status(500).json({ error: 'Error al leer mockup.json' });
-    // }    
+    res.sendFile(path.join(__dirname, '../index.html')); // Ruta absoluta a index.html
+});
+
+app.get('/test', (req, res) => {
+    res.json('{[hola]}')
 });
 
 // 5. Configurar Multer para subir imágenes
@@ -78,6 +76,12 @@ app.post('/api/posts', upload.single('image'), (req, res) => {
 
 // 8. Iniciar servidor en puerto 3000
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor funcionando en http://localhost:${PORT}`);
-});
+const startServer = () => {
+  app.listen(PORT, () => {
+    console.log(`Servidor funcionando en http://localhost:${PORT}`);
+  });
+};
+
+// Exportar la función que inicia el servidor
+export { startServer };
+startServer();
