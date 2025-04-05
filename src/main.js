@@ -6,16 +6,12 @@ const visions = document.getElementById('visions');
 const supabaseUrl = 'https://tkilbmlfaxwtsssahgys.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRraWxibWxmYXh3dHNzc2FoZ3lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMyMzU1NTgsImV4cCI6MjA1ODgxMTU1OH0.Ru5jAMuLBI605-9lTJS599njqIA7RzLmcrXnM38SDOI';
 
-
-// const supabase = window.createClient( supabaseUrl, supabaseKey)
 const supabase = createClient(supabaseUrl, supabaseKey); 
-console.log(createClient);
 
 
 async function fetchData() {
     try {
         if ( window.ENV === 'development') {
-            console.log('IF STATEMENT');
 
             const PORT = 3000;
             const response = await fetch(`http://localhost:${PORT}/api/posts`);
@@ -24,8 +20,6 @@ async function fetchData() {
             console.log(data);   
             displayVisions(data);
         } else {
-            console.log('ELSE STATEMENT');
-
             const { data, error } = await supabase
                 .from('posts')
                 .select('*')
@@ -191,8 +185,6 @@ async function postVision(event) {
 
 // Attaches the submitForm function to the forms submit event
 form.addEventListener('submit', postVision)
-
-
 
 
 fetchData();
