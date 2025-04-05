@@ -9,7 +9,5 @@ dist/
 # Node modules
 node_modules/
 
-
-# SUPABASE config
-
+.env
 

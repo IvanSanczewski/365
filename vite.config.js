@@ -1,6 +1,6 @@
 export default {
-    server: {
-      open: true,
-    },
-  };
-  
+  root: './', 
+  build: {
+    outDir: 'dist'
+  }
+}
