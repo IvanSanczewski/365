@@ -1,13 +1,22 @@
 console.log('Environment:', window.ENV);
 import { createClient } from '@supabase/supabase-js';
+import { supabase, currentUser, checkAuthState } from './auth.js';
 
 const visions = document.getElementById('visions');
 
-const supabaseUrl = 'https://tkilbmlfaxwtsssahgys.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRraWxibWxmYXh3dHNzc2FoZ3lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMyMzU1NTgsImV4cCI6MjA1ODgxMTU1OH0.Ru5jAMuLBI605-9lTJS599njqIA7RzLmcrXnM38SDOI';
 
-const supabase = createClient(supabaseUrl, supabaseKey); 
+// Make function global so can be referenced from auth.js
+window.displayAddPost = function() {
+    const form = document.querySelector('.post-form');
+    form.classList.toggle('hidden');
+    console.log(form);
+}
 
+// Toggles the visibility of the form - kept for backward compatibility
+function displayAddPost(){
+    form.classList.toggle('hidden');
+    console.log(form);
+}
 
 async function fetchData() {
     try {
@@ -39,40 +48,49 @@ async function fetchData() {
 }
 
 
-
 // Creates the HTML nodes and to display the posts content
 function displayVisions(data) {
     visions.innerHTML = '';
-    // data.forEach(item => {
-        for (const item in data) {
-            const li = document.createElement('li');
-            li.classList.add('vision-element');
+    for (const item in data) {
+        const li = document.createElement('li');
+        li.classList.add('vision-element');
 
-            const pictureDiv = document.createElement('div');
-            pictureDiv.className = 'picture';
-            
-            const img = document.createElement('img');
-            img.setAttribute('src', `${data[item].image}`);
-            img.setAttribute('alt', 'some ALT text');
-            
-            const contextDiv = document.createElement('div');
-            contextDiv.className = 'context';
-
-
-            const text = document.createElement('p');
-            text.className = 'text';
-            text.textContent = `${data[item].text}`
-            
-            const caption = document.createElement('p');
-            caption.className = 'caption';
-            caption.textContent = `${data[item].location}, ${data[item].year}`
-            
-            pictureDiv.appendChild(img);
-            contextDiv.append(text, caption)
-            li.append(pictureDiv, contextDiv);
-            visions.appendChild(li);
+        // Store post ID as a data attribute for deletion
+        if (item.id) {
+            li.dataset.postId = item.id;
         }
-    // })
+
+        const pictureDiv = document.createElement('div');
+        pictureDiv.className = 'picture';
+        
+        const img = document.createElement('img');
+        img.setAttribute('src', `${data[item].image}`);
+        img.setAttribute('alt', 'some ALT text');
+        
+        const contextDiv = document.createElement('div');
+        contextDiv.className = 'context';
+
+
+        const text = document.createElement('p');
+        text.className = 'text';
+        text.textContent = `${data[item].text}`
+        
+        const caption = document.createElement('p');
+        caption.className = 'caption';
+        caption.textContent = `${data[item].location}, ${data[item].year}`
+        
+        pictureDiv.appendChild(img);
+        contextDiv.append(text, caption)
+        li.append(pictureDiv, contextDiv);
+        visions.appendChild(li);
+    }
+
+    // To be implemented only if deletion is implemented
+    /*
+    if (currentUser) {
+        addDeleteButtons();
+    }
+    */
 }
 
 
@@ -87,11 +105,6 @@ if (!addPost) {
     addPost.addEventListener('click', displayAddPost);
 }
 
-// Toggles the visibility of the form
-function displayAddPost(){
-    form.classList.toggle('hidden');
-    console.log(form);
-}
 
 addPost.addEventListener('click', displayAddPost);
 
@@ -102,20 +115,44 @@ document.addEventListener("DOMContentLoaded", () =>  {
     const fileInput = document.getElementById('file-upload');
     const fileNameContainer = document.querySelector('.selected-file');
 
-    fileInput.addEventListener("change", event => {
-        const fileName = event.target.files.length > 0 ? event.target.files[0].name : "No file selected"
-        fileNameContainer.textContent = fileName;
-    });
+    if (fileInput && fileNameContainer){ //TODO: check if condition is necessary
+        fileInput.addEventListener("change", event => {
+            const fileName = event.target.files.length > 0 ? event.target.files[0].name : "No file selected"
+            fileNameContainer.textContent = fileName;
+        });
+    }
+
+    // Initialise AUTHENTICATION
+    checkAuthState();
+
+    // Set up addNewPost event listener TODO: check condition
+    const addPost = document.querySelector('.addNewPost');
+    if (addPost) {
+        addPost.addEventListener('click', displayAddPost);
+    }
 });
 
-    
+//FIXME: Add authentication     
 async function postVision(event) {
     event.preventDefault(); // Prevents default form submit
     
+
+    // Check if user is authenticated
+    if (!currentUser) {
+        alert('You must be the author to share your vision');
+        return;
+    }
+
     const file = document.getElementById('file-upload').files[0];
     const text = document.getElementById('text').value;
     const location = document.getElementById('location').value;
     const year = document.getElementById('year').value;
+
+    //TODO: check if condition is necessary
+    if (!file) {
+        alert('Please upload an image');
+        return;
+    }
     
     
     try {
@@ -132,7 +169,11 @@ async function postVision(event) {
                 body: formData
             });
             alert('New vision added (development)');
-            displayVisions();
+            //FIXME: substitutes displayVisions() by fetchData() in develpment env
+            // displayVisions();
+            fetchData();
+
+
             
             // Handles the response, showing a possible 4XX error
             if (!response.ok) {
@@ -166,7 +207,8 @@ async function postVision(event) {
                     image: urlData.publicUrl,
                     text, 
                     location,
-                    year
+                    year,
+                    user_id: currentUser.id //TODO: decide if needed
                 }]);
 
             if (insertError) {
@@ -183,8 +225,16 @@ async function postVision(event) {
 }
 
 
+// Make functions available globally TODO: check global functions with window object
+window.fetchData = fetchData;
+window.displayVisions = displayVisions;
+window.postVision = postVision;
+
+
 // Attaches the submitForm function to the forms submit event
-form.addEventListener('submit', postVision)
+if (form) {
+    form.addEventListener('submit', postVision)
+}
 
 
 fetchData();
