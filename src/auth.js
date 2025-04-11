@@ -142,6 +142,43 @@ function displayAdminUI(){
 
 
 
+// Inject HTML with original post form
+function setupPostForm(){
+    const form = document.querySelector('.post-form');
+
+    // Reset form
+    form.innerHTML= `
+        <div class="vision-form">
+            <div class="file-upload-container">
+                <label for="file-upload" class="btn file-btn">pick up a vision</label>
+                <span class="selected-file">...your selected vision</span>
+            </div>
+            <input type="file" name="image" id="file-upload">
+            <textarea name="text" id="text" cols="75" rows="5" placeholder="insert text..."></textarea>
+        </div>
+        
+        <div class="caption-form">
+            <textarea name="location" id="location" cols="20" rows="1" placeholder="location"></textarea>
+            <textarea name="year" id="year" cols="20" rows="1" placeholder="year"></textarea>
+        </div>
+
+        <div class="password-form">
+            <button class="btn">publish</button>
+        </div>
+    `;
+
+    // Reassign event listener to read the file 
+    const fileInput = document.getElementById('file-upload');
+    const fileNameContainer = document.querySelector('.selected-file');
+
+    fileInput.addEventListener('change', event => {
+        const fileName = event.target.files.length > 0 ? event.target.files[0].name : 'No file has been selected...';
+        fileNameContainer.textContent = fileName;
+    });
+
+    // Reassign submit
+    form.addEventListener('submit', postVision);
+}
 
 
 
