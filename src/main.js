@@ -4,7 +4,6 @@ import { supabase, currentUser, checkAuthState } from './auth.js';
 
 const visions = document.getElementById('visions');
 
-
 // Make function global so can be referenced from auth.js
 window.displayAddPost = function() {
     const form = document.querySelector('.post-form');
