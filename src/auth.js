@@ -154,8 +154,6 @@ function displayAdminUI(){
 
 
 
-
-
 // Initialise auth on page load
 document.addEventListener('DOMContentLoaded', () =>{
     checkAuthState();
