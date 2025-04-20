@@ -44,17 +44,19 @@ function displayLoginForm() {
                     <p class='auth-message'></p>
                 </div>
             `;
+            
+            document.querySelector('.login-btn').addEventListener('click', handleLogin);
 
             //FIXME: move the inline styles to the styleshet file
             const authContainer = document.querySelector('.authContainer');
-            authContainer.style.width = '300px';
-            authContainer.style.padding = '20px';
-            authContainer.style.margin = '0 auto';
-            authContainer.style.display = 'flex';
-            authContainer.style.flexDirection = 'column';
-            authContainer.style.gap = '15px';
-
-            document.getElementById('login-btn').addEventListener('click', handleLogin);
+            if (authContainer) {
+                authContainer.style.width = '300px';
+                authContainer.style.padding = '20px';
+                authContainer.style.margin = '0 auto';
+                authContainer.style.display = 'flex';
+                authContainer.style.flexDirection = 'column';
+                authContainer.style.gap = '15px';
+            }
         });
     }
 }
@@ -62,9 +64,9 @@ function displayLoginForm() {
 
 // Handle login (email + password)
 async function handleLogin() {
-    const email = document.getElementById('email');
-    const password = document.getElementById('password');
-    const messageEl = document.getElementById('auth-message');
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const messageEl = document.querySelector('.auth-message');
 
     if (!email || !password) {
         messageEl.textContent = 'Both, email & password are required to post your next vision';
@@ -73,6 +75,7 @@ async function handleLogin() {
     }
     
     try {
+        console.log('Attempting login with: ', email);
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         
         if (error) throw error;
@@ -82,8 +85,6 @@ async function handleLogin() {
         messageEl.style.color = 'green';//FIXME: change colour if error handling is needed
         
         setTimeout(()=> displayAdminUI(), 1000);
-        // setTimeout(()=> {displayAdminUI();}, 1000);
-        // setTimeout( displayAdminUI, 1000);
     
     } catch (error) {
         messageEl.textContent = error.message || 'Login failed. Please, try again.';

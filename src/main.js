@@ -1,6 +1,6 @@
 console.log('Environment:', window.ENV);
 import { createClient } from '@supabase/supabase-js';
-import { supabase, currentUser, checkAuthState } from './auth.js';
+import { supabase, currentUser, checkAuthState, handleLogin, handleLogout } from './auth.js';
 
 const visions = document.getElementById('visions');
 
