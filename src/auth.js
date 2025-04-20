@@ -11,7 +11,7 @@ let currentUser = null;
 // Check if user is logged 
 async function checkAuthState() {
     console.log('AUTH first step');
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session }, error } = await supabase.auth.getSession();
 
     if (error) {
         console.error('Session error: ', error);
@@ -23,17 +23,17 @@ async function checkAuthState() {
 
     if (session && session.user) {
         currentUser = session.user;
-        console.log(`User ${currentUser} is logged in`);
+        console.log(`User ${currentUser.email} is logged in`);
         displayAdminUI();
     } else {
         console.log('No active session, displaying login form');
         displayLoginForm();
     }
 }
-
+ 
 
 // Display login form
-function displayLoginForm() {
+function displayLoginForm() { 
     const addPostBtn = document.querySelector('.addNewPost');
     const form = document.querySelector('.post-form');
 
@@ -59,7 +59,7 @@ function displayLoginForm() {
             document.querySelector('.login-btn').addEventListener('click', handleLogin);
 
             //FIXME: move the inline styles to the styleshet file
-            const authContainer = document.querySelector('.authContainer');
+            const authContainer = document.querySelector('.auth-c ontainer');
             if (authContainer) {
                 authContainer.style.width = '300px';
                 authContainer.style.padding = '20px';

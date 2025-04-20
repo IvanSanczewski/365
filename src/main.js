@@ -98,14 +98,11 @@ const form = document.querySelector('.post-form');
 
 // Verificar si el elemento existe
 // (addPost === null)? console.log('null') : console.log('!null');
-if (!addPost) {
-    console.error('Elemento .addNewPost no encontrado');
-} else {
-    addPost.addEventListener('click', displayAddPost);
-}
-
-
-addPost.addEventListener('click', displayAddPost);
+// if (!addPost) {
+//     console.error('Elemento .addNewPost no encontrado');
+// } else {
+//     addPost.addEventListener('click', displayAddPost); // 1
+// }
 
 
 
@@ -123,11 +120,11 @@ document.addEventListener("DOMContentLoaded", () =>  {
 
     // Initialise AUTHENTICATION
     checkAuthState();
-
+ 
     // Set up addNewPost event listener TODO: check condition
     const addPost = document.querySelector('.addNewPost');
     if (addPost) {
-        addPost.addEventListener('click', displayAddPost);
+        addPost.addEventListener('click', displayAddPost); // 3
     }
 });
 
