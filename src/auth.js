@@ -21,7 +21,6 @@ async function checkAuthState() {
 }
 
 
-
 // Display login form
 function displayLoginForm() {
     const addPostBtn = document.querySelector('.addNewPost');
@@ -32,7 +31,7 @@ function displayLoginForm() {
         addPostBtn.removeEventListener('click', displayAddPost);
         addPostBtn.addEventListener('click', () => {
             
-            // Transform the form into an auth form
+            // Updates the form into an auth form
             form.classList.remove('hidden');
             form.innerHTML = `
                 <div class='auth-container'>
@@ -65,7 +64,7 @@ function displayLoginForm() {
 async function handleLogin() {
     const email = document.getElementById('email');
     const password = document.getElementById('password');
-    const messageEl = document.getElementById('messageEl');
+    const messageEl = document.getElementById('auth-message');
 
     if (!email || !password) {
         messageEl.textContent = 'Both, email & password are required to post your next vision';
@@ -82,9 +81,9 @@ async function handleLogin() {
         messageEl.textContent = "You're set to post a vision...";
         messageEl.style.color = 'green';//FIXME: change colour if error handling is needed
         
-        setTimeout(()=> displayAdminForm(), 1000);
-        setTimeout(()=> {displayAdminForm();}, 1000);
-        setTimeout( displayAdminForm, 1000);
+        setTimeout(()=> displayAdminUI(), 1000);
+        // setTimeout(()=> {displayAdminUI();}, 1000);
+        // setTimeout( displayAdminUI, 1000);
     
     } catch (error) {
         messageEl.textContent = error.message || 'Login failed. Please, try again.';
@@ -141,7 +140,6 @@ function displayAdminUI(){
 }
 
 
-
 // Inject HTML with original post form
 function setupPostForm(){
     const form = document.querySelector('.post-form');
@@ -183,12 +181,111 @@ function setupPostForm(){
 
 
 
+// Add delete feature for individual posts 
+function addDeleteButtons() {
+    // wait until posts are uploaded
+    setTimeout(() => {
+        const visionElements = document.querySelectorAll('.vision-element');
+
+        visionElements.forEach(element => { // FIXME: to be implemented in HTML and CSS files if delete buttons will be passed as part of the application
+            if(!element.querySelector('.delete-btn')) {
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.classList.add('btn', 'delete-btn');
+                deleteBtn.style.position = 'absolute';
+                deleteBtn.style.top = '10px';
+                deleteBtn.style.right = '10px';
+                deleteBtn.style.backgroundColor = '#ff4444';
+                deleteBtn.style.color = 'white';
+                
+                element.style.position = 'relative';
+                element.appendChild(deleteBtn);
+
+
+                // Add delete functionality
+                deleteBtn.addEventListener('click', async () => {
+                    // Select post ID from image src
+                    const img = element.querySelector('img');
+                    const imgSrc = img ? img.getAttribute('src') : null;
+
+                    if (!imgSrc) {
+                        alert('The vision to delete does not exist.');
+                        
+                        if (confirm('Are you certain?')) {
+                            try {
+                                // Query the vision using the image path
+                                const { data: posts, error: queryError } = await supabase
+                                    .from('posts')
+                                    .select('id')
+                                    .eq('image', imgSrc);
+
+                                if (queryError) throw queryError;
+
+                                if (posts && posts.length > 0) {
+                                    const postId = posts[0].id;
+
+                                    // Delete vision from Supabase
+                                    const { error: deleteError } = await supabase
+                                        .from('posts')
+                                        .delete()
+                                        .eq('id', postId);
+                                    
+                                    if (deleteError) throw deleteError;
+
+                                    // Delete vision from the interface
+                                    element.remove();
+                                    alert('Vision deleted.');
+                                } else {
+                                    alert('Vision not found in the database.');
+                                }
+
+                            } catch (error) {
+                                alert('Vision culd not be deleted: ' + error.message);
+                            }
+                        }
+                    }
+                })
+            }
+        })
+
+    }, 1000); // TODO: check whether it is better to use an async function
+}
 
 
 
 
+// Handle logout
+async function handleLogout() {
+    try {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
 
+        currentUser = null;
 
+        // Remove admin interface
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) logoutBtn.remove();        
+
+        const adminIndicator = document.getElementById('admin-indicator');
+        if (adminIndicator) adminIndicator.remove();        
+
+        // Remove delete buttons
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        if (deleteButtons) deleteButtons.remove();        
+
+        // Reset button to post new vision
+        displayLoginForm();
+
+        // Hide form if visible
+        const form = document.querySelector('.post-form');
+        form.classList.add('hidden');
+
+        alert("Do not forget tomorrow's vision");
+
+    } catch (error) {
+        alert('Error logging out: ' + error.message);
+    }
+}
 
 
 // Initialise auth on page load
