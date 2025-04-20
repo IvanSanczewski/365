@@ -12,10 +12,21 @@ let currentUser = null;
 async function checkAuthState() {
     console.log('AUTH first step');
     const { data: { session } } = await supabase.auth.getSession();
-    if (session) {
+
+    if (error) {
+        console.error('Session error: ', error);
+        displayLoginForm();
+        return;
+    }
+
+    console.log('Session check result: ', session);
+
+    if (session && session.user) {
         currentUser = session.user;
+        console.log(`User ${currentUser} is logged in`);
         displayAdminUI();
     } else {
+        console.log('No active session, displaying login form');
         displayLoginForm();
     }
 }
@@ -70,27 +81,38 @@ async function handleLogin() {
 
     if (!email || !password) {
         messageEl.textContent = 'Both, email & password are required to post your next vision';
-        messageEl.style.color = 'crimson';//FIXME: change colour if error handling is needed
-        return;//FIXME: check if jump statement is needed
+        messageEl.style.color = 'crimson'; //FIXME: change colour if error handling is needed
+        return; //FIXME: check if jump statement is needed
     }
     
     try {
         console.log('Attempting login with: ', email);
+        
+        // Email & password sign in
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         
         if (error) throw error;
         
-        currentUser = data.user;
-        messageEl.textContent = "You're set to post a vision...";
-        messageEl.style.color = 'green';//FIXME: change colour if error handling is needed
-        
-        setTimeout(()=> displayAdminUI(), 1000);
+        // Check if a user is returned from the backend
+        if (data && data.user) {
+            currentUser = data.user;
+            console.log('Login successful: ', currentUser);
     
+            messageEl.textContent = "You're set to post a vision...";
+            messageEl.style.color = 'green';//FIXME: change colour if error handling is needed
+            setTimeout(()=> displayAdminUI(), 1000);
+        
+        } else {
+            messageEl.textContent = 'Login failed - no user data returned';
+            messageEl.style.color = 'crimson';
+        }
+
     } catch (error) {
+        console.error('Login error: ', error);
         messageEl.textContent = error.message || 'Login failed. Please, try again.';
         messageEl.style.color = 'crimson';
     }
-}
+} 
 
 
 // Display admin UI after successuful login 
