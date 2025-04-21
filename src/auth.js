@@ -59,8 +59,7 @@ function displayLoginForm() {
             document.querySelector('.login-btn').addEventListener('click', handleLogin);
 
             //FIXME: move the inline styles to the styleshet file
-            const authContainer = document.querySelector('.auth-c  
-                ontainer');
+            const authContainer = document.querySelector('.auth-container');
             if (authContainer) {
                 authContainer.style.width = '300px';
                 authContainer.style.padding = '20px';
