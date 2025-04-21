@@ -59,7 +59,8 @@ function displayLoginForm() {
             document.querySelector('.login-btn').addEventListener('click', handleLogin);
 
             //FIXME: move the inline styles to the styleshet file
-            const authContainer = document.querySelector('.auth-c ontainer');
+            const authContainer = document.querySelector('.auth-c  
+                ontainer');
             if (authContainer) {
                 authContainer.style.width = '300px';
                 authContainer.style.padding = '20px';
@@ -231,40 +232,37 @@ function addDeleteButtons() {
                     const img = element.querySelector('img');
                     const imgSrc = img ? img.getAttribute('src') : null;
 
-                    if (!imgSrc) {
-                        alert('The vision to delete does not exist.');
-                        
-                        if (confirm('Are you certain?')) {
-                            try {
-                                // Query the vision using the image path
-                                const { data: posts, error: queryError } = await supabase
+
+                    if (imgSrc && confirm('Are you certain?')) {
+                        try {
+                            // Query the vision using the image path
+                            const { data: posts, error: queryError } = await supabase
+                                .from('posts')
+                                .select('id')
+                                .eq('image', imgSrc);
+
+                            if (queryError) throw queryError;
+
+                            if (posts && posts.length > 0) {
+                                const postId = posts[0].id;
+
+                                // Delete vision from Supabase
+                                const { error: deleteError } = await supabase
                                     .from('posts')
-                                    .select('id')
-                                    .eq('image', imgSrc);
+                                    .delete()
+                                    .eq('id', postId);
+                                
+                                if (deleteError) throw deleteError;
 
-                                if (queryError) throw queryError;
-
-                                if (posts && posts.length > 0) {
-                                    const postId = posts[0].id;
-
-                                    // Delete vision from Supabase
-                                    const { error: deleteError } = await supabase
-                                        .from('posts')
-                                        .delete()
-                                        .eq('id', postId);
-                                    
-                                    if (deleteError) throw deleteError;
-
-                                    // Delete vision from the interface
-                                    element.remove();
-                                    alert('Vision deleted.');
-                                } else {
-                                    alert('Vision not found in the database.');
-                                }
-
-                            } catch (error) {
-                                alert('Vision culd not be deleted: ' + error.message);
+                                // Delete vision from the interface
+                                element.remove();
+                                alert('Vision deleted.');
+                            } else {
+                                alert('Vision not found in the database.');
                             }
+
+                        } catch (error) {
+                            alert('Vision culd not be deleted: ' + error.message);
                         }
                     }
                 })
