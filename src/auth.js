@@ -232,7 +232,6 @@ function addDeleteButtons() {
                     const img = element.querySelector('img');
                     const imgSrc = img ? img.getAttribute('src') : null;
 
-
                     if (imgSrc && confirm('Are you certain?')) {
                         try {
                             // Query the vision using the image path
