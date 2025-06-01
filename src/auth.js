@@ -229,44 +229,93 @@ function addDeleteButtons() {
                 deleteBtn.addEventListener('click', async () => {
                     // Select post ID from image src
                     const img = element.querySelector('img');
-                    const imgSrc = img ? img.getAttribute('src') : null;
 
-                    if (imgSrc && confirm('Are you certain?')) {
+                    if(!img?.src) {
+                        console.log('IMG:', img); // CHECK
+                        console.log('SRC:', imgSrc); // CHECK
+                        alert('No image found to delete');
+                        return;
+                    }
+                    
+                    // Get the full image URL
+                    const imgFullURL = img.src;
+                    console.log(imgFullURL); // CHECK
+
+                    // Remove double slash
+                    const imgCleanURL = imgFullURL.replace(/([^:]\/)\/+/g, '$1');
+                    console.log('Cleaned URL:', imgCleanURL); // CHECK
+
+                    // extract something
+                    const imgSrcALT = img ? img.getAttribute('src') : null;
+                    console.log('WHAT DO WE EXTRACT?', imgSrcALT); // CHECK
+                    
+                    // extract just the file name
+                    const imgSrc = img.src.split('/').pop();
+                    console.log('ATTEMPTING TO DLT IMG:', imgSrc); // CHECK
+
+
+                    console.log('IMG:', img); // CHECK
+                    console.log('SRC:', imgSrc); // CHECK
+                    
+                    // if (imgSrc && confirm('Are you certain?')) {
+                    if (confirm('Are you certain?')) {
                         try {
-                            // Query the vision using the image path
+                            console.log('TRY BLOCK'); // CHECK
+                            // Query using the filename (not full URL)
                             const { data: posts, error: queryError } = await supabase
-                                .from('posts')
-                                .select('id')
-                                .eq('image', imgSrc);
+                            .from('posts')
+                            .select('*')
+                            .ilike('image', `%${img.src.split('/').pop()}%`);
 
+                            // Query the vision using the image path
+                            // const { data: posts, error: queryError } = await supabase
+                            // .from('posts')
+                            // .select('id')
+                            // .eq('image', imgSrc);
+                            
+                            console.log('MATCHING POSTS:', posts); // CHECK
+                            console.log('ERR:', error); // CHECK
                             if (queryError) throw queryError;
-
-                            if (posts && posts.length > 0) {
-                                const postId = posts[0].id;
-
+                            
+                            
+                            if (posts?.length) {
                                 // Delete vision from Supabase
-                                const { error: deleteError } = await supabase
-                                    .from('posts')
-                                    .delete()
-                                    .eq('id', postId);
+                                const path = img.src.split('/public/')[1];
+                                const { error: storageError } = await supabase
+                                .from('visions')
+                                .remove([path])
+                                
+                            if (storageError) throw storageError;
+
+                            const { error: deleteError } = await supabase
+                                .from('posts')
+                                .delete()
+                                .eq('id', posts[0].id);
                                 
                                 if (deleteError) throw deleteError;
-
+                                
                                 // Delete vision from the interface
+                                console.log(element); // CHECK
                                 element.remove();
                                 alert('Vision deleted.');
+                                console.log(posts);
+                                console.log(posts.length);
                             } else {
+                                console.log('ELSE BLOCK'); // CHECK
+                                console.log('Full image URL from element:', img.src); // CHECK
+                                console.log('Extracted filename:', imgSrc); // CHECK
+                                console.error('No matching post found for URL:', imgCleanURL); // CHECK
                                 alert('Vision not found in the database.');
                             }
-
+                            
                         } catch (error) {
+                            console.error('Delete error:', error); // CHECK
                             alert('Vision culd not be deleted: ' + error.message);
                         }
                     }
                 })
             }
         })
-
     }, 1000); // TODO: check whether it is better to use an async function
 }
 
