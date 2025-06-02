@@ -9,5 +9,9 @@ dist/
 # Node modules
 node_modules/
 
+
 .env
 
+
+# 1st Dist in Hostinger before update
+dist_may_25

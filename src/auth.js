@@ -21,7 +21,7 @@ async function checkAuthState() {
 
     console.log('Session check result: ', session);
 
-    if (session && session.user) {
+    if (session?.user) {
         currentUser = session.user;
         console.log(`User ${currentUser.email} is logged in`);
         displayAdminUI();

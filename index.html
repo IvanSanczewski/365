@@ -6,7 +6,11 @@
         <title>a year diary</title>
         <link rel="stylesheet" href="./src/styles.css">
         
-        <script>window.ENV = 'production';</script>
+        <!-- <script>window.ENV = 'production';</script> -->
+        <!-- <script>window.ENV = '<%=process.env.NODE_ENV%>'</script> -->
+         <script>
+            window.ENV = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'develpment' : 'production';
+         </script>
     </head>
     <body>
         
