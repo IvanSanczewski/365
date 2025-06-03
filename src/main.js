@@ -1,5 +1,5 @@
 console.log('Environment:', window.ENV);
-import { createClient } from '@supabase/supabase-js';
+//import { createClient } from '@supabase/supabase-js';
 import { supabase, currentUser, checkAuthState, handleLogin, handleLogout } from './auth.js';
 
 const visions = document.getElementById('visions');
@@ -84,7 +84,7 @@ function displayVisions(data) {
         visions.appendChild(li);
     }
 
-    // To be implemented only if deletion is implemented
+    // TODO:To be implemented only if deletion is implemented
     /*
     if (currentUser) {
         addDeleteButtons();
@@ -95,15 +95,6 @@ function displayVisions(data) {
 
 const addPost = document.querySelector('.addNewPost');
 const form = document.querySelector('.post-form');
-
-// Verificar si el elemento existe
-// (addPost === null)? console.log('null') : console.log('!null');
-// if (!addPost) {
-//     console.error('Elemento .addNewPost no encontrado');
-// } else {
-//     addPost.addEventListener('click', displayAddPost); // 1
-// }
-
 
 
 // Displays the selected file name in the form  
@@ -131,18 +122,12 @@ document.addEventListener("DOMContentLoaded", () =>  {
 //FIXME: Add authentication     
 async function postVision(event) {
     event.preventDefault(); // Prevents default form submit
-    
-
-    // Check if user is authenticated
-    if (!currentUser) {
-        alert('You must be the author to share your vision');
-        return;
-    }
 
     const file = document.getElementById('file-upload').files[0];
     const text = document.getElementById('text').value;
     const location = document.getElementById('location').value;
-    const year = document.getElementById('year').value;
+    const year = parseInt(document.getElementById('year').value);
+    console.log(year, typeof year);
 
     //TODO: check if condition is necessary
     if (!file) {
@@ -204,7 +189,7 @@ async function postVision(event) {
                     text, 
                     location,
                     year,
-                    user_id: currentUser.id //TODO: decide if needed
+                    // user_id: currentUser.id //TODO: decide if needed
                 }]);
 
             if (insertError) {

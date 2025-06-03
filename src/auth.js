@@ -90,7 +90,12 @@ async function handleLogin() {
         
         // Email & password sign in
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        
+
+        console.group("Supabase Response");
+        console.log("Data:", data);
+        console.log("Error:", error);
+        console.groupEnd();
+
         if (error) throw error;
         
         // Check if a user is returned from the backend
@@ -266,12 +271,6 @@ function addDeleteButtons() {
                             .from('posts')
                             .select('*')
                             .ilike('image', `%${img.src.split('/').pop()}%`);
-
-                            // Query the vision using the image path
-                            // const { data: posts, error: queryError } = await supabase
-                            // .from('posts')
-                            // .select('id')
-                            // .eq('image', imgSrc);
                             
                             console.log('MATCHING POSTS:', posts); // CHECK
                             console.log('ERR:', error); // CHECK
@@ -281,7 +280,7 @@ function addDeleteButtons() {
                             if (posts?.length) {
                                 // Delete vision from Supabase
                                 const path = img.src.split('/public/')[1];
-                                const { error: storageError } = await supabase
+                                const { error: storageError } = await supabase.storage
                                 .from('visions')
                                 .remove([path])
                                 
