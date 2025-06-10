@@ -1,6 +1,6 @@
 :root {
     --footer-height: 3em;
-    --nav-width: 215px;
+    --nav-width: 385px;
     --header-height: 6em;
 
     --visions-total: 0;
@@ -53,6 +53,19 @@ h1 {
     font-weight: 300;
 }
 
+h4 {
+    /* padding-bottom: ;     */
+    
+    color: #333;
+    font-weight: 300;
+}
+
+h5{
+    color: #333;
+    
+    font-weight: 200;
+}
+
 .container-row {
     display:flex;
     flex-direction: row;
@@ -76,7 +89,7 @@ nav li {
 }
 
 .home-link {
-    font-size: .95em;
+    font-size: 1.05em;
 }
 
 a {
@@ -120,7 +133,7 @@ footer p {
 #main-menu {
     display: flex;
     flex-direction: column;
-    gap: .8em;
+    gap: 1.8em;
 }
 
 .home-link {
