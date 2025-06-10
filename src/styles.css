@@ -98,7 +98,7 @@ a {
 }
 
 img {
-    height: 50vh;
+    height: 100%;
     display: block;
     object-fit: contain;
 }
@@ -182,7 +182,7 @@ footer p {
 .picture {
     flex: 0 0 auto;
 
-    height: 50vh;
+    height: 60vh;
     width: auto; /* El ancho dependerá del objeto contenidio */
 
     object-fit: contain;
