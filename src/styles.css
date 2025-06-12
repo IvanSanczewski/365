@@ -145,15 +145,6 @@ footer p {
     font-weight: 600;
 }
 
-#visions {
-    /* display: grid; */
-    /* gap: 1em; */
-    /* grid-auto-flow: column; */
-    /* grid-auto-columns: 18%; */
-    /* grid-template-columns: repeat(auto-fill, minmax(375px + calc(100vw - (375px * 2)), 1fr)); */
-
-}
-
 #visions{
     display: grid;
     grid-template-columns: repeat(var(--visions-total), minmax(auto, auto));
