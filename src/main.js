@@ -93,6 +93,39 @@ function displayVisions(data) {
 }
 
 
+// KEYBOARD NAVIGATION
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight'){
+        e.preventDefault();
+    }
+
+    const visions = document.getElementById('visions');
+    const currentScroll = visions.scrollLeft;
+    const visionElements = document.querySelectorAll('.visions-element');
+
+    if (visionElements.length === 0) return; //TODO: check if (!visionsElements) works
+
+    //This gets the width of the 1st vision li element, gap included
+    const visionWidth = visionElements[0].offsetWidth + parseInt(window.getComputedStyle(visions).gap);
+    
+    if (e.key === 'ArrowLeft') {
+        // Scroll left to previous image
+        visions.scrollTo({
+            left: Math.max(0, currentScroll - visionWidth),
+            behavior: 'smooth'
+        });
+    } else if (e.key === 'ArrowRight') {
+        // Scroll right to next image
+        visions.scrollTo({
+            left: Math.min(
+                visions.scrollWidth - visions.clientWidth,
+                currentScroll + visionWidth),
+            behavior: 'smooth'
+        });
+    }
+});
+
+
 const addPost = document.querySelector('.addNewPost');
 const form = document.querySelector('.post-form');
 

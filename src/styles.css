@@ -4,6 +4,10 @@
     --header-height: 6em;
 
     --visions-total: 0;
+
+    --color-background: rgb(239, 239, 239); 
+
+    --color-text_background-gradient: #dbdbdb, var(--color-background);
 }
 
 * {
@@ -15,13 +19,15 @@
 }
 
 body {
-    min-height: 100vh;
-
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
 
     position: relative;
+    
+    min-height: 100vh;
+
+    background-color: var(--color-background);
 }
 
 nav {
@@ -149,9 +155,13 @@ footer p {
     display: grid;
     grid-template-columns: repeat(var(--visions-total), minmax(auto, auto));
     gap: .5em;
-    width: calc(100vw - var(--nav-width));
 
     margin: 0 auto;
+    width: calc(100vw - var(--nav-width));
+
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+
     overflow-x: auto;
 }
 
@@ -160,7 +170,10 @@ footer p {
     align-items: stretch;
 
     width: auto;
-    background: linear-gradient(90deg, #eee, #fff);
+    /* background: linear-gradient(90deg, #eee, #fff); */
+    background: linear-gradient(90deg,var(--color-text_background-gradient));
+
+    scroll-snap-align: start;
 }
 
 .picture {
@@ -177,6 +190,7 @@ footer p {
     flex-direction: column;
     justify-content: center;
     flex: auto;
+    gap: 2em;
     
     margin: 0 1em 0 1em;
 
@@ -186,6 +200,9 @@ footer p {
     overflow-y: hidden;
 }
 
+.context p {
+    line-height: 1.55;
+}
 
 .context p, span {
     font-size: .8em;
