@@ -101,7 +101,7 @@ a {
     color: #333;
 }
 
-img {
+img, video {
     height: 100%;
     display: block;
     object-fit: contain;
