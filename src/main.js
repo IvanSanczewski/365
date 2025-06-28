@@ -1,4 +1,5 @@
 console.log('Environment:', window.ENV);
+import { GoTrueAdminApi } from '@supabase/supabase-js';
 //import { createClient } from '@supabase/supabase-js';
 import { supabase, currentUser, checkAuthState, handleLogin, handleLogout } from './auth.js';
 
@@ -8,7 +9,7 @@ const visions = document.getElementById('visions');
 window.displayAddPost = function() {
     const form = document.querySelector('.post-form');
     form.classList.toggle('hidden');
-    console.log(form);
+    console.log('FORM: ', form);
 }
 
 // Toggles the visibility of the form - kept for backward compatibility
@@ -24,6 +25,7 @@ async function fetchData() {
             const PORT = 3000;
             const response = await fetch(`http://localhost:${PORT}/api/posts`);
             const data = await response.json();
+            if (data) displayVisions(data);//FIXME: validation to be deleted
             document.documentElement.style.setProperty('--visions-total', data.length);
             console.log(data);   
             displayVisions(data);
@@ -31,13 +33,22 @@ async function fetchData() {
             const { data, error } = await supabase
                 .from('posts')
                 .select('*')
+                .order('created_at', { ascending: true }); //TODO: Decide whether last vision is shown first or last
 
-            if (error) {
-                console.log('Error:', error);
-            } else {
+            if (!error && data) {
                 document.documentElement.style.setProperty('--visions-total', data.length);
                 displayVisions(data);
+            } else {
+                console.log('Error:', error);
             }
+
+
+            // if (error) {
+            //     console.log('Error:', error);
+            // } else {
+            //     document.documentElement.style.setProperty('--visions-total', data.length);
+            //     displayVisions(data);
+            // }
         }
 
     } catch (error) {
@@ -50,7 +61,10 @@ async function fetchData() {
 // Creates the HTML nodes and to display the posts content
 function displayVisions(data) {
     visions.innerHTML = '';
-    for (const item in data) {
+    data.forEach(item => {
+    // for (const item in data) {
+        if (!item) return; // Skips function if there are invalid items
+
         const li = document.createElement('li');
         li.classList.add('vision-element');
 
@@ -59,30 +73,49 @@ function displayVisions(data) {
             li.dataset.postId = item.id;
         }
 
+        // Creates media container
         const pictureDiv = document.createElement('div');
         pictureDiv.className = 'picture';
+
+        // Checks if media exist and creates type class to diferentiate picture vs cideo
+        if (item.image) {
+            //FIXME: FLAG: either flag as isVideo || !isVideo or as isVideo || isPhoto
+            const isVideo = item.image.match && item.image.match(/\.(mp4|mov|webm)$/i);
+            const isPhoto = item.image.match && item.image.match(/\.(jpg|png|jpeg)$/i);
+
+            if (isVideo) {
+                const video = document.createElement('video');
+                video.src = item.image;
+                video.controls = true;
+                video.loop = true;
+                video.muted = true;
+                pictureDiv.append(video);
+            } else {
+                const img = document.createElement('img');
+                img.src = item.image;
+                img.alt = 'one vision';
+                pictureDiv.append(img);
+            }
+        }
         
-        const img = document.createElement('img');
-        img.setAttribute('src', `${data[item].image}`);
-        img.setAttribute('alt', 'some ALT text');
-        
+        // CREATES TEXT CONTEXT
         const contextDiv = document.createElement('div');
         contextDiv.className = 'context';
 
-
         const text = document.createElement('p');
         text.className = 'text';
-        text.textContent = `${data[item].text}`
+        text.textContent = item.text || ''; //Will create an empty space and follow on in the event of an emtpy text
+        // text.textContent = `${data[item].text}`
         
         const caption = document.createElement('p');
         caption.className = 'caption';
-        caption.textContent = `${data[item].location}, ${data[item].year}`
+        caption.textContent = `${item.location || ''}, ${item.year || ''}`; //Will create an empty space and follow on in the event of emtpy location/year
         
-        pictureDiv.appendChild(img);
         contextDiv.append(text, caption)
         li.append(pictureDiv, contextDiv);
         visions.appendChild(li);
-    }
+
+    });
 
     // TODO:To be implemented only if deletion is implemented
     /*
